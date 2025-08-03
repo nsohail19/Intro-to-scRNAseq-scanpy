@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -103,6 +103,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../css/styles.css">
@@ -294,19 +297,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives:</a></li>
-  <li><a href="#single-cell-rna-seq-quality-control-set-up" id="toc-single-cell-rna-seq-quality-control-set-up" class="nav-link" data-scroll-target="#single-cell-rna-seq-quality-control-set-up">Single-cell RNA-seq: Quality control set-up</a>
-  <ul class="collapse">
+  <li><a href="#single-cell-rna-seq-quality-control-set-up" id="toc-single-cell-rna-seq-quality-control-set-up" class="nav-link" data-scroll-target="#single-cell-rna-seq-quality-control-set-up">Single-cell RNA-seq: Quality control set-up</a></li>
   <li><a href="#exploring-the-example-dataset" id="toc-exploring-the-example-dataset" class="nav-link" data-scroll-target="#exploring-the-example-dataset">Exploring the example dataset</a>
   <ul class="collapse">
   <li><a href="#raw-data" id="toc-raw-data" class="nav-link" data-scroll-target="#raw-data">Raw data</a></li>
   <li><a href="#metadata" id="toc-metadata" class="nav-link" data-scroll-target="#metadata">Metadata</a></li>
   </ul></li>
-  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set up</a></li>
-  </ul></li>
-  <li><a href="#todo-download-instructions" id="toc-todo-download-instructions" class="nav-link" data-scroll-target="#todo-download-instructions">TODO: download instructions</a>
+  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set up</a>
   <ul class="collapse">
+  <li><a href="#todo-download-instructions" id="toc-todo-download-instructions" class="nav-link" data-scroll-target="#todo-download-instructions">TODO: download instructions</a></li>
   <li><a href="#project-organization" id="toc-project-organization" class="nav-link" data-scroll-target="#project-organization">Project organization</a></li>
+  <li><a href="#new-script" id="toc-new-script" class="nav-link" data-scroll-target="#new-script">New script</a>
+  <ul class="collapse">
+  <li><a href="#loading-libraries" id="toc-loading-libraries" class="nav-link" data-scroll-target="#loading-libraries">Loading libraries</a></li>
   </ul></li>
+  <li><a href="#loading-single-cell-rna-seq-count-data" id="toc-loading-single-cell-rna-seq-count-data" class="nav-link" data-scroll-target="#loading-single-cell-rna-seq-count-data">Loading single-cell RNA-seq count data</a>
+  <ul class="collapse">
+  <li><a href="#barcodes.tsv" id="toc-barcodes.tsv" class="nav-link" data-scroll-target="#barcodes.tsv">1. <code>barcodes.tsv</code></a></li>
+  <li><a href="#features.tsv" id="toc-features.tsv" class="nav-link" data-scroll-target="#features.tsv">2. <code>features.tsv</code></a></li>
+  <li><a href="#matrix.mtx" id="toc-matrix.mtx" class="nav-link" data-scroll-target="#matrix.mtx">3. <code>matrix.mtx</code></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#reading-in-a-single-sample" id="toc-reading-in-a-single-sample" class="nav-link" data-scroll-target="#reading-in-a-single-sample">Reading in a single sample</a></li>
+  <li><a href="#anatomy-of-anndata" id="toc-anatomy-of-anndata" class="nav-link" data-scroll-target="#anatomy-of-anndata">Anatomy of AnnData</a>
+  <ul class="collapse">
+  <li><a href="#cell-metadata" id="toc-cell-metadata" class="nav-link" data-scroll-target="#cell-metadata">Cell metadata</a></li>
+  <li><a href="#gene-metadata" id="toc-gene-metadata" class="nav-link" data-scroll-target="#gene-metadata">Gene metadata</a></li>
+  <li><a href="#counts-matrix" id="toc-counts-matrix" class="nav-link" data-scroll-target="#counts-matrix">Counts matrix</a></li>
+  <li><a href="#layers" id="toc-layers" class="nav-link" data-scroll-target="#layers">Layers</a></li>
+  </ul></li>
+  <li><a href="#reading-in-multiple-samples-with-a-for-loop" id="toc-reading-in-multiple-samples-with-a-for-loop" class="nav-link" data-scroll-target="#reading-in-multiple-samples-with-a-for-loop">Reading in multiple samples with a <code>for loop</code></a></li>
+  <li><a href="#merging-sample-together" id="toc-merging-sample-together" class="nav-link" data-scroll-target="#merging-sample-together">Merging sample together</a></li>
   </ul>
 </nav>
     </div>
@@ -345,8 +366,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Approximate time: 90 minutes</p>
-<section id="learning-objectives" class="level2">
-<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives:</h2>
+<section id="learning-objectives" class="level1">
+<h1>Learning Objectives:</h1>
 <ul>
 <li>Demonstrate how to import data and set up project for upcoming quality control analysis.</li>
 </ul>
@@ -356,14 +377,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="../img/sc_workflow_2022.jpg" width="630"></p>
 <p>After quantifying gene expression we need to bring this data into R to generate metrics for performing QC. In this lesson we will talk about the format(s) count data can be expected in, and how to read it into R so we can move on to the QC step in the workflow. We will also discuss the dataset we will be using and the associated metadata.</p>
 <hr>
-<section id="exploring-the-example-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="exploring-the-example-dataset">Exploring the example dataset</h2>
+</section>
+<section id="exploring-the-example-dataset" class="level1">
+<h1>Exploring the example dataset</h1>
 <p>For this workshop we will be working with a single-cell RNA-seq dataset which is part of a larger study from <a href="https://www.nature.com/articles/nbt.4042">Kang et al, 2017</a>. In this paper, the authors present a computational algorithm that harnesses genetic variation (eQTL) to determine the genetic identity of each droplet containing a single cell (singlet) and identify droplets containing two cells from different individuals (doublets).</p>
 <p>The data used to test their algorithm is comprised of pooled Peripheral Blood Mononuclear Cells (PBMCs) taken from eight lupus patients, split into control and interferon beta-treated (stimulated) conditions.</p>
 <p><img src="../img/kangetal_image.png" width="700"></p>
 <p><em>Image credit: <a href="https://www.nature.com/articles/nbt.4042">Kang et al, 2017</a></em></p>
-<section id="raw-data" class="level3">
-<h3 class="anchored" data-anchor-id="raw-data">Raw data</h3>
+<section id="raw-data" class="level2">
+<h2 class="anchored" data-anchor-id="raw-data">Raw data</h2>
 <p>This dataset is available on GEO (<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96583">GSE96583</a>), however the available counts matrix lacked mitochondrial reads, so we downloaded the BAM files from the SRA (<a href="https://www-ncbi-nlm-nih-gov.ezp-prod1.hul.harvard.edu/sra?term=SRP102802">SRP102802</a>). These BAM files were converted back to FASTQ files, then run through <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger">Cell Ranger</a> to obtain the count data that we will be using.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -379,8 +401,8 @@ Note
 </div>
 </div>
 </section>
-<section id="metadata" class="level3">
-<h3 class="anchored" data-anchor-id="metadata">Metadata</h3>
+<section id="metadata" class="level2">
+<h2 class="anchored" data-anchor-id="metadata">Metadata</h2>
 <p>In addition to the raw data, we also need to collect <strong>information about the data</strong>; this is known as <strong>metadata</strong>. There is often a temptation to just start exploring the data, but it is not very meaningful if we know nothing about the samples that this data originated from.</p>
 <p>Some relevant metadata for our dataset is provided below:</p>
 <ul>
@@ -407,8 +429,8 @@ Note
 <p>None of the above cell types are expected to be low complexity or anticipated to have high mitochondrial content.</p>
 </section>
 </section>
-<section id="set-up" class="level2">
-<h2 class="anchored" data-anchor-id="set-up">Set up</h2>
+<section id="set-up" class="level1">
+<h1>Set up</h1>
 <p>For this workshop, we will be working within an RStudio project. In order to follow along you should have <strong>downloaded the R project</strong>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -423,10 +445,9 @@ Important
 <p>If you haven’t done this already, the project can be accessed using <a href="https://www.dropbox.com/s/vop78wq76h02a2f/single_cell_rnaseq.zip?dl=1">this link</a>.</p>
 </div>
 </div>
+<section id="todo-download-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="todo-download-instructions">TODO: download instructions</h2>
 </section>
-</section>
-<section id="todo-download-instructions" class="level1">
-<h1>TODO: download instructions</h1>
 <section id="project-organization" class="level2">
 <h2 class="anchored" data-anchor-id="project-organization">Project organization</h2>
 <p>One of the most important parts of research that involves large amounts of data, is how best to manage it. We tend to prioritize the analysis, but there are many other important aspects of <strong>data management that are often overlooked</strong> in the excitement to get a first look at new data. The <a href="https://datamanagement.hms.harvard.edu/">HMS Data Management Working Group</a>, discusses in-depth some things to consider beyond the data creation and analysis.</p>
@@ -438,9 +459,459 @@ Important
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>├── results</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>└── figures</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-
 </section>
+<section id="new-script" class="level2">
+<h2 class="anchored" data-anchor-id="new-script">New script</h2>
+<p>Next, open a new Jupyter Notebook file (ipynb), and start with some comments to indicate what this file is going to contain:</p>
+<div id="98ccaa67-7264-4c4c-9ba0-d50881d9d3a7" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># July/August 2021</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># HBC single-cell RNA-seq workshop</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Single-cell RNA-seq analysis - QC</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Save the Rscript as <code>quality_control.ipynb</code>. Your working directory should look something like this:</p>
+<p>TODO <img src="../img/Rstudio_singlecell.png" width="400"></p>
+<section id="loading-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="loading-libraries">Loading libraries</h3>
+<p>Now, we can load the necessary libraries:</p>
+<div id="7e54f359-b582-4c06-9e21-9d75740ae9b8" class="cell" data-editable="true" data-quarto-private-1="{&quot;key&quot;:&quot;slideshow&quot;,&quot;value&quot;:{&quot;slide_type&quot;:&quot;&quot;}}" data-tags="[]" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>warnings.simplefilter(action<span class="op">=</span><span class="st">'ignore'</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                      category<span class="op">=</span><span class="pp">FutureWarning</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="loading-single-cell-rna-seq-count-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-single-cell-rna-seq-count-data">Loading single-cell RNA-seq count data</h2>
+<p>Regardless of the technology or pipeline used to process your raw single-cell RNA-seq sequence data, the output with quantified expression will generally be the same. That is, for each individual sample you will have the following <strong>three files</strong>:</p>
+<ol type="1">
+<li>A file with the <strong>cell IDs</strong>, representing all cells quantified</li>
+<li>A file with the <strong>gene IDs</strong>, representing all genes quantified</li>
+<li>A <strong>matrix of counts</strong> per gene for every cell</li>
+</ol>
+<p>We can explore these files by clicking the <code>data/ctrl_raw_feature_bc_matrix</code> folder:</p>
+<section id="barcodes.tsv" class="level3">
+<h3 class="anchored" data-anchor-id="barcodes.tsv">1. <code>barcodes.tsv</code></h3>
+<p>This is a text file which contains all cellular barcodes present for that sample. Barcodes are listed in the order of data presented in the matrix file (i.e.&nbsp;these are the column names).</p>
+<p><img src="../img/cell_ids_new.png" width="130"></p>
+</section>
+<section id="features.tsv" class="level3">
+<h3 class="anchored" data-anchor-id="features.tsv">2. <code>features.tsv</code></h3>
+<p>This is a text file which contains the identifiers of the quantified genes. The source of the identifier can vary depending on what reference (i.e.&nbsp;Ensembl, NCBI, UCSC) you use in the quantification methods, but most often these are official gene symbols. The order of these genes corresponds to the order of the rows in the matrix file (i.e.&nbsp;these are the row names).</p>
+<p><img src="../img/genes.png" width="200"></p>
+</section>
+<section id="matrix.mtx" class="level3">
+<h3 class="anchored" data-anchor-id="matrix.mtx">3. <code>matrix.mtx</code></h3>
+<p>This is a text file which contains a matrix of count values. The rows are associated with the gene IDs above and columns correspond to the cellular barcodes. Note that there are <strong>many zero values</strong> in this matrix.</p>
+<p><img src="../img/sparse_matrix.png" width="600"></p>
+<p>Loading this data into R requires us to <strong>use functions that allow us to efficiently combine these three files into a single count matrix.</strong> However, instead of creating a regular matrix data structure, the functions we will use create a <strong>sparse matrix</strong> to reduce the amount of memory (RAM), processing capacity (CPU) and storage required to work with our huge count matrix.</p>
+<p>Scanpy allows us to easily read in the data by using the <code>read_10x_mtx()</code> function.</p>
+</section>
+</section>
+</section>
+<section id="reading-in-a-single-sample" class="level1">
+<h1>Reading in a single sample</h1>
+<p>After processing 10X data using its proprietary software Cell Ranger, you will have an <code>outs</code> directory (always). Within this directory you will find a number of different files including the files listed below:</p>
+<ul>
+<li><strong><code>web_summary.html</code>:</strong> report that explores different QC metrics, including the mapping metrics, filtering thresholds, estimated number of cells after filtering, and information on the number of reads and genes per cell after filtering.</li>
+<li><strong>BAM alignment files:</strong> files used for visualization of the mapped reads and for re-creation of FASTQ files, if needed</li>
+<li><strong><code>filtered_feature_bc_matrix</code>:</strong> folder containing all files needed to construct the count matrix using data filtered by Cell Ranger</li>
+<li><strong><code>raw_feature_bc_matrix</code>:</strong> folder containing all files needed to construct the count matrix using the raw unfiltered data</li>
+</ul>
+<p>While Cell Ranger performs filtering on the expression counts (see note below), we wish to perform our own QC and filtering because we want to account for the biology of our experiment/biological system. Given this <strong>we are only interested in the <code>raw_feature_bc_matrix</code> folder</strong> in the Cell Ranger output.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Filtered matrix
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Why do we not use the <code>filtered_feature_bc_matrix</code> folder? The <code>filtered_feature_bc_matrix</code> uses <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/algorithms/overview">internal filtering criteria by Cell Ranger</a>, and we do not have control of what cells to keep or abandon.</p>
+<p>The filtering performed by Cell Ranger when generating the <code>filtered_feature_bc_matrix</code> is often good; however, sometimes data can be of very high quality and the Cell Ranger filtering process can remove high quality cells. In addition, it is generally preferable to explore your own data while taking into account the biology of the experiment for applying thresholds during filtering. For example, if you expect a particular cell type in your dataset to be smaller and/or not as transcriptionally active as other cell types in your dataset, these cells have the potential to be filtered out. However, with Cell Ranger v3 they have tried to account for cells of different sizes (for example, tumor vs infiltrating lymphocytes), and now may not filter as many low quality cells as needed.</p>
+</div>
+</div>
+<p>With a single sample, we can generate an AnnData object:</p>
+<div id="c011d90c-4601-458d-830f-9852c882c3a8" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read_10x_mtx(<span class="st">"../data/ctrl_raw_feature_bc_matrix/"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>AnnData object with n_obs × n_vars = 737280 × 33538
+    var: 'gene_ids', 'feature_types'</code></pre>
+</div>
+</div>
+<p>We can see from this callout that we have 737,280 cells and 33,538 which is clearly too many! So we can do some very low level filtration to remove any cells that we know are “empty”.</p>
+<p>The <code>filter_cells()</code> function specifies the minimum number of genes that need to be detected per cell. This argument will filter out poor quality cells that likely just have random barcodes encapsulated without any cell present. Usually, cells with less than 100 genes detected are not considered for analysis.</p>
+<div id="14b17a93-8f9a-4775-8ea4-8d375694e37d" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sc.pp.filter_cells(ad, min_genes<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>AnnData object with n_obs × n_vars = 15688 × 33538
+    obs: 'n_genes'
+    var: 'gene_ids', 'feature_types'</code></pre>
+</div>
+</div>
+<p>Immediately we can see that we are now left with 15,688 cells.</p>
+</section>
+<section id="anatomy-of-anndata" class="level1">
+<h1>Anatomy of AnnData</h1>
+<p>There are three main “slots” with the AnnData object:</p>
+<ul>
+<li><code>obs</code> = metadata for each cell</li>
+<li><code>var</code> = metadata for each gene</li>
+<li><code>X</code> and <code>Layers</code> = count matrices</li>
+</ul>
+<section id="cell-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="cell-metadata">Cell metadata</h2>
+<p>To being, we will not have much metadata in our scanpy object beyond the cell barcodes themselves. When we ran the <code>filter_cells()</code> function, it automatically calculated the number of genes with non-zero expression for each cell and stored it in a column titled <code>n_genes</code>:</p>
+<div id="ecd0bf15-6f89-44a2-80da-6525387684c8" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ad.obs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">n_genes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACAATGCC-1</td>
+<td>874</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACATTTCC-1</td>
+<td>896</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCAGAAA-1</td>
+<td>725</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACCAGCTA-1</td>
+<td>979</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCATGCA-1</td>
+<td>362</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>We can ourselves add additional metadata in the <code>.obs</code> with relevant information (sample, sex, age, timepoint, etc). In our case, we can update the sample information to keep track that these cells came from our <code>ctrl</code> sample.</p>
+<div id="79b40112-614a-4eb3-90f4-6bbda3e7e224" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">"sample"</span>] <span class="op">=</span> <span class="st">"ctrl"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ad.obs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">n_genes</th>
+<th data-quarto-table-cell-role="th">sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACAATGCC-1</td>
+<td>874</td>
+<td>ctrl</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACATTTCC-1</td>
+<td>896</td>
+<td>ctrl</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCAGAAA-1</td>
+<td>725</td>
+<td>ctrl</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACCAGCTA-1</td>
+<td>979</td>
+<td>ctrl</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCATGCA-1</td>
+<td>362</td>
+<td>ctrl</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="gene-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="gene-metadata">Gene metadata</h2>
+<div id="71f00e89-d3ad-4679-80f3-28a73ba2619b" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ad.var.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">gene_ids</th>
+<th data-quarto-table-cell-role="th">feature_types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">MIR1302-2HG</td>
+<td>ENSG00000243485</td>
+<td>Gene Expression</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">FAM138A</td>
+<td>ENSG00000237613</td>
+<td>Gene Expression</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">OR4F5</td>
+<td>ENSG00000186092</td>
+<td>Gene Expression</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AL627309.1</td>
+<td>ENSG00000238009</td>
+<td>Gene Expression</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AL627309.3</td>
+<td>ENSG00000239945</td>
+<td>Gene Expression</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="counts-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="counts-matrix">Counts matrix</h2>
+<p>By default, the counts matrix will be stored in a format known as a “sparse matrix” which is a way store large matrix data in an efficient way.</p>
+<div id="83a7da62-90a1-46b4-9b1c-8829c94d4d81" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ad.X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>&lt;15688x33538 sparse matrix of type '&lt;class 'numpy.float32'&gt;'
+    with 9243628 stored elements in Compressed Sparse Column format&gt;</code></pre>
+</div>
+</div>
+<p>To access each value in the first 5 columns and rows, we can use the <code>todense()</code> function to get a preview of what is going on:</p>
+<div id="8538da80-903e-48f6-913d-36f50f034034" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ad.X[<span class="dv">1</span>:<span class="dv">5</span>, <span class="dv">1</span>:<span class="dv">5</span>].todense()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>matrix([[0., 0., 0., 0.],
+        [0., 0., 0., 0.],
+        [0., 0., 0., 0.],
+        [0., 0., 0., 0.]], dtype=float32)</code></pre>
+</div>
+</div>
+<p>The values are primarily 0’s which is line with our expenctation of this <strong>zero-inflated</strong> data.</p>
+</section>
+<section id="layers" class="level2">
+<h2 class="anchored" data-anchor-id="layers">Layers</h2>
+<p>The <code>.X</code> is considered to be the default layer for calculations. Since we will later normalize our data, we want to ensure that we store our raw counts in a place we can access it later by making use of <code>Layers</code> where we can store multiple different count matrices and access them at will. So to start, we are going to stash away this matrix.</p>
+<p>We will also specify the <code>copy()</code> function to ensure that the data is copied over, and that it doesn’t just point to <code>.X</code> (which may change in the future).</p>
+<div id="5fa4d902-13de-4b4e-9a2d-87be5372f94a" class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ad.layers[<span class="st">"raw"</span>] <span class="op">=</span> ad.X.copy()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+<pre><code>AnnData object with n_obs × n_vars = 15756 × 33538
+    obs: 'n_genes', 'sample'
+    var: 'gene_ids', 'feature_types'
+    layers: 'raw'</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="reading-in-multiple-samples-with-a-for-loop" class="level1">
+<h1>Reading in multiple samples with a <code>for loop</code></h1>
+<p>In practice, you will likely have several samples that you will need to read in data for, and that can get tedious and error-prone if you do it one at a time. So, to make the data import into R more efficient we can use a <code>for</code> loop, which will iterate over a series of commands for each of the inputs given and create seurat objects for each of our samples.</p>
+<p>Today we will use it to <strong>iterate over the two sample folders</strong> and execute two commands for each sample as we did above for a single sample -</p>
+<ol type="1">
+<li>Generate list of sample names</li>
+<li>Read in the count data (<code>read_10x_mtx()</code>)</li>
+<li>Filter out the very low quality data</li>
+<li>Add the sample information to the metadata</li>
+<li>Store AnnData to a dictionary (for later merging)</li>
+</ol>
+<p>Go ahead and copy and paste the code below into your script and then run it.</p>
+<div id="3712a40a-c847-41b3-8f67-604834294341" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sample_names <span class="op">=</span> [<span class="st">"ctrl"</span>, <span class="st">"stim"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>dict_ad <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sample <span class="kw">in</span> sample_names:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the path for each sample</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    path_data <span class="op">=</span> <span class="ss">f"../data/</span><span class="sc">{</span>sample<span class="sc">}</span><span class="ss">_raw_feature_bc_matrix"</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(path_data)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Load AnnData object</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter and add sample metadata</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    ad <span class="op">=</span> sc.read_10x_mtx(path_data)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    sc.pp.filter_cells(ad, min_genes<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    ad.obs[<span class="st">"sample"</span>] <span class="op">=</span> sample</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    dict_ad[sample] <span class="op">=</span> ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>../data/ctrl_raw_feature_bc_matrix
+../data/stim_raw_feature_bc_matrix</code></pre>
+</div>
+</div>
+<p>Now we take a look at <code>dict_ad</code> to see if we sucessfully loaded in both of our sample. We expect to see two distincty AnnData objects in the dictionary.</p>
+<div id="cfb3dcb1-2776-477f-9a60-bd2e45b4129e" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dict_ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>{'ctrl': AnnData object with n_obs × n_vars = 15688 × 33538
+     obs: 'n_genes', 'sample'
+     var: 'gene_ids', 'feature_types',
+ 'stim': AnnData object with n_obs × n_vars = 15756 × 33538
+     obs: 'n_genes', 'sample'
+     var: 'gene_ids', 'feature_types'}</code></pre>
+</div>
+</div>
+</section>
+<section id="merging-sample-together" class="level1">
+<h1>Merging sample together</h1>
+<p>Next, we need to merge these objects together into a single object. This will make it easier to run the QC steps for both sample groups together and enable us to easily compare the data quality for all the samples.</p>
+<p>We can use the <code>concatenate()</code> function to do this. We also specify several arguments to ensure the merge is done correctly with:</p>
+<ul>
+<li>join</li>
+<li>batch_key</li>
+<li>batch_categories</li>
+<li>index_unique</li>
+</ul>
+<div id="6808583f-f9fc-4a9a-92d0-e0dfda0640d1" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pooling together the samples</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> sc.AnnData.concatenate(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span><span class="bu">list</span>(dict_ad.values()), <span class="co"># the asterisk unpacks the list</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    join<span class="op">=</span><span class="st">'outer'</span>, </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    batch_key <span class="op">=</span> <span class="st">'sample'</span>, </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    batch_categories <span class="op">=</span> sample_names,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    index_unique <span class="op">=</span> <span class="st">'_'</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>adata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<pre><code>AnnData object with n_obs × n_vars = 31444 × 33538
+    obs: 'n_genes', 'sample'
+    var: 'gene_ids', 'feature_types'</code></pre>
+</div>
+</div>
+<p>If we look at the metadata of the merged object we should be able to see the correct samples in the metadata:</p>
+<div id="851d4bff-6c1c-433c-9ee3-997e13f03ef9" class="cell" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>adata.obs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="57">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">n_genes</th>
+<th data-quarto-table-cell-role="th">sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACAATGCC-1_ctrl</td>
+<td>874</td>
+<td>ctrl</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACATTTCC-1_ctrl</td>
+<td>896</td>
+<td>ctrl</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCAGAAA-1_ctrl</td>
+<td>725</td>
+<td>ctrl</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACCAGCTA-1_ctrl</td>
+<td>979</td>
+<td>ctrl</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCATGCA-1_ctrl</td>
+<td>362</td>
+<td>ctrl</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="8a794bf6-acdc-4747-b8f1-079434e7f9c9" class="cell" data-execution_count="58">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>adata.obs.tail()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="58">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">n_genes</th>
+<th data-quarto-table-cell-role="th">sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TTTGCATGCTAAGC-1_stim</td>
+<td>545</td>
+<td>stim</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TTTGCATGGGACGA-1_stim</td>
+<td>518</td>
+<td>stim</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TTTGCATGGTGAGG-1_stim</td>
+<td>469</td>
+<td>stim</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TTTGCATGGTTTGG-1_stim</td>
+<td>432</td>
+<td>stim</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TTTGCATGTCTTAC-1_stim</td>
+<td>438</td>
+<td>stim</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
