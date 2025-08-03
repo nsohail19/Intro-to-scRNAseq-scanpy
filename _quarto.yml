@@ -5,20 +5,20 @@ project:
     - img/
     - css/
     - slides/
+    - schedule/
 
 
 website:
-  title: "Introduction to R"
+  title: "Introduction to scRNA-seq"
   page-footer: >
       This lesson has been developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/). <br>
-      These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited. <br>
-      Some materials used are adapted from work that is Copyright © [Data Carpentry](http://datacarpentry.org/). All Data Carpentry instructional material is made available under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0).
+      These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.
   
   
   navbar:
     left:
       - text: "Schedule"
-        href: lessons/schedule.qmd
+        href: schedule/schedule.qmd
     right:
       - text: "HBC"
         href: https://bioinformatics.sph.harvard.edu/
@@ -34,42 +34,35 @@ website:
     collapse-level: 1     # At what header level to start collapsing
     # contents: auto      # Creates automatic TOC from page headers (no sections)
     contents:
+      - section: "Pre-reading:"
+        contents:
+        - lessons/01_intro_to_scRNA-seq.qmd
+        - lessons/02_SC_generation_of_count_matrix.qmd
+
       - section: "Day 1:"
         contents:
-          - lessons/01b_introR-R-and-RStudio.qmd  
+          - lessons/03_SC_quality_control-setup.qmd
       - section: "Day 1 Self-learning:"
         contents:
-          - lessons/02_introR-syntax-and-data-structures.qmd
-          - lessons/03_introR-functions-and-arguments.qmd
-          - lessons/06_reading_and_data_inspection.qmd
-
-      - section: "Day 2"
+          - lessons/04_cellranger_QC.qmd
+          - lessons/04_SC_quality_control.qmd
+          - lessons/05_theory_of_PCA.qmd
+          
+      - section: "Day 2:"
         contents:
-          - lessons/Day2_activities.qmd
-          - lessons/05_introR-data-wrangling.qmd
+          - lessons/06_SC_SCT_normalization.qmd
+          - lessons/06a_integration_cca_theory.qmd
       - section: "Day 2 Self-learning"
         contents:
-          - lessons/04_introR_packages.qmd
-          - lessons/07_introR-data-wrangling2.qmd
-          - lessons/08_identifying-matching-elements.qmd
-          - lessons/09_reordering-to-match-datasets.qmd
-          - lessons/10_setting_up_to_plot.qmd
-
-      - section: "Day 3"
+          - lessons/06b_integration_code_harmony.qmd
+          - lessons/07_SC_clustering_cells_SCT.qmd
+          - lessons/08_SC_clustering_quality_control.qmd
+          - lessons/seurat_cheatsheet.qmd
+          
+      - section: "Day 3:"
         contents:
-          - lessons/Day3_activities.qmd
-          - lessons/11_ggplot2.qmd
-      - section: "Day 3 Self-learning"
-        contents:
-          - lessons/11b_Custom_Functions_ggplot2.qmd
-          - lessons/12_boxplot_exercise.qmd
-          - lessons/13_exporting_data_and_plots.qmd
-          - lessons/14_finding_help.qmd
-          - lessons/15_tidyverse.qmd
-
-      - section: "Day 4"
-        contents:
-          - lessons/Day4_activities.qmd
+          - lessons/09_merged_SC_marker_identification.qmd
+          - lessons/scRNAseq_workflow.qmd
           
 
 format:
