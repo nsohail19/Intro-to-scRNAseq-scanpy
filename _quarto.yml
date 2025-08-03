@@ -41,7 +41,7 @@ website:
 
       - section: "Day 1:"
         contents:
-          - lessons/03_SC_quality_control-setup.qmd
+          - lessons/03_SC_quality_control-setup.ipynb
       - section: "Day 1 Self-learning:"
         contents:
           - lessons/04_cellranger_QC.qmd

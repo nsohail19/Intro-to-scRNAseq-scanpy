@@ -21,6 +21,75 @@
     "text": "Packages\n\nconda create -n scrna_py python==3.8\nconda activate scrna_py\nconda install jupyter pandas matplotlib"
   },
   {
+    "objectID": "lessons/03_SC_quality_control-setup.html",
+    "href": "lessons/03_SC_quality_control-setup.html",
+    "title": "Quality Control Setup",
+    "section": "",
+    "text": "Approximate time: 90 minutes",
+    "crumbs": [
+      "Day 1:",
+      "Quality Control Setup"
+    ]
+  },
+  {
+    "objectID": "lessons/03_SC_quality_control-setup.html#learning-objectives",
+    "href": "lessons/03_SC_quality_control-setup.html#learning-objectives",
+    "title": "Quality Control Setup",
+    "section": "Learning Objectives:",
+    "text": "Learning Objectives:\n\nDemonstrate how to import data and set up project for upcoming quality control analysis.",
+    "crumbs": [
+      "Day 1:",
+      "Quality Control Setup"
+    ]
+  },
+  {
+    "objectID": "lessons/03_SC_quality_control-setup.html#exploring-the-example-dataset",
+    "href": "lessons/03_SC_quality_control-setup.html#exploring-the-example-dataset",
+    "title": "Quality Control Setup",
+    "section": "Exploring the example dataset",
+    "text": "Exploring the example dataset\nFor this workshop we will be working with a single-cell RNA-seq dataset which is part of a larger study from Kang et al, 2017. In this paper, the authors present a computational algorithm that harnesses genetic variation (eQTL) to determine the genetic identity of each droplet containing a single cell (singlet) and identify droplets containing two cells from different individuals (doublets).\nThe data used to test their algorithm is comprised of pooled Peripheral Blood Mononuclear Cells (PBMCs) taken from eight lupus patients, split into control and interferon beta-treated (stimulated) conditions.\n\nImage credit: Kang et al, 2017\n\nRaw data\nThis dataset is available on GEO (GSE96583), however the available counts matrix lacked mitochondrial reads, so we downloaded the BAM files from the SRA (SRP102802). These BAM files were converted back to FASTQ files, then run through Cell Ranger to obtain the count data that we will be using.\n\n\n\n\n\n\nNote\n\n\n\nThe count data for this dataset is also freely available from 10X Genomics and is used in the Seurat tutorial.\n\n\n\n\nMetadata\nIn addition to the raw data, we also need to collect information about the data; this is known as metadata. There is often a temptation to just start exploring the data, but it is not very meaningful if we know nothing about the samples that this data originated from.\nSome relevant metadata for our dataset is provided below:\n\nThe libraries were prepared using 10X Genomics version 2 chemistry\nThe samples were sequenced on the Illumina NextSeq 500\nPBMC samples from eight individual lupus patients were separated into two aliquots each.\n\nOne aliquot of PBMCs was activated by 100 U/mL of recombinant IFN-β for 6 hours.\nThe second aliquot was left untreated.\nAfter 6 hours, the eight samples for each condition were pooled together in two final pools (stimulated cells and control cells). We will be working with these two, pooled samples. (We did not demultiplex the samples because SNP genotype information was used to demultiplex in the paper and the barcodes/sample IDs were not readily available for this data. Generally, you would demultiplex and perform QC on each individual sample rather than pooling the samples.)\n\n12,138 and 12,167 cells were identified (after removing doublets) for control and stimulated pooled samples, respectively.\nSince the samples are PBMCs, we will expect immune cells, such as:\n\nB cells\nT cells\nNK cells\nmonocytes\nmacrophages\npossibly megakaryocytes\n\n\nIt is recommended that you have some expectation regarding the cell types you expect to see in a dataset prior to performing the QC. This will inform you if you have any cell types with low complexity (lots of transcripts from a few genes) or cells with higher levels of mitochondrial expression. This will enable us to account for these biological factors during the analysis workflow.\nNone of the above cell types are expected to be low complexity or anticipated to have high mitochondrial content.",
+    "crumbs": [
+      "Day 1:",
+      "Quality Control Setup"
+    ]
+  },
+  {
+    "objectID": "lessons/03_SC_quality_control-setup.html#set-up",
+    "href": "lessons/03_SC_quality_control-setup.html#set-up",
+    "title": "Quality Control Setup",
+    "section": "Set up",
+    "text": "Set up\nFor this workshop, we will be working within an RStudio project. In order to follow along you should have downloaded the R project.\n\n\n\n\n\n\nImportant\n\n\n\nIf you haven’t done this already, the project can be accessed using this link.",
+    "crumbs": [
+      "Day 1:",
+      "Quality Control Setup"
+    ]
+  },
+  {
+    "objectID": "lessons/03_SC_quality_control-setup.html#project-organization",
+    "href": "lessons/03_SC_quality_control-setup.html#project-organization",
+    "title": "Quality Control Setup",
+    "section": "Project organization",
+    "text": "Project organization\nOne of the most important parts of research that involves large amounts of data, is how best to manage it. We tend to prioritize the analysis, but there are many other important aspects of data management that are often overlooked in the excitement to get a first look at new data. The HMS Data Management Working Group, discusses in-depth some things to consider beyond the data creation and analysis.\nOne important aspect of data management is organization. For each experiment you work on and analyze data for, it is considered best practice to get organized by creating a planned storage space (directory structure). We will do that for our single-cell analysis.\nLook inside your project space and you will find that a directory structure has been setup for you:\n\nsingle_cell_rnaseq/\n├── data\n├── results\n└── figures",
+    "crumbs": [
+      "Day 1:",
+      "Quality Control Setup"
+    ]
+  },
+  {
+    "objectID": "schedule/schedule.html",
+    "href": "schedule/schedule.html",
+    "title": "Introduction to Single-cell RNA-seq Schedule",
+    "section": "",
+    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
+  },
+  {
+    "objectID": "schedule/schedule.html#pre-reading",
+    "href": "schedule/schedule.html#pre-reading",
+    "title": "Introduction to Single-cell RNA-seq Schedule",
+    "section": "",
+    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
+  },
+  {
     "objectID": "lessons/02_SC_generation_of_count_matrix.html",
     "href": "lessons/02_SC_generation_of_count_matrix.html",
     "title": "Generation of count matrix",
@@ -74,20 +143,6 @@
       "Pre-reading:",
       "Generation of count matrix"
     ]
-  },
-  {
-    "objectID": "schedule/schedule.html",
-    "href": "schedule/schedule.html",
-    "title": "Introduction to Single-cell RNA-seq Schedule",
-    "section": "",
-    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
-  },
-  {
-    "objectID": "schedule/schedule.html#pre-reading",
-    "href": "schedule/schedule.html#pre-reading",
-    "title": "Introduction to Single-cell RNA-seq Schedule",
-    "section": "",
-    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
   },
   {
     "objectID": "lessons/01_intro_to_scRNA-seq.html",
