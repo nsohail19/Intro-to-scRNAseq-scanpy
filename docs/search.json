@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Introduction to single-cell RNA-seq",
+    "section": "",
+    "text": "This repository has teaching materials for a hands-on Introduction to single-cell RNA-seq workshop. This workshop will instruct participants on how to design a single-cell RNA-seq experiment, and how to efficiently manage and analyze the data starting from count matrices. This will be a hands-on workshop in which we will focus on using the Scanpy package using Python/Jupyter Lab.\n\n\n\n\n\n\nNote\n\n\n\nThese materials were developed for a trainer-led workshop, but are amenable to self-guided learning."
+  },
+  {
+    "objectID": "index.html#applications",
+    "href": "index.html#applications",
+    "title": "Introduction to single-cell RNA-seq",
+    "section": "Applications",
+    "text": "Applications\nAnaconda"
+  },
+  {
+    "objectID": "index.html#packages",
+    "href": "index.html#packages",
+    "title": "Introduction to single-cell RNA-seq",
+    "section": "Packages",
+    "text": "Packages\n\nconda create -n scrna_py python==3.8\nconda activate scrna_py\nconda install jupyter pandas matplotlib"
+  }
+]
