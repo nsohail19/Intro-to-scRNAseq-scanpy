@@ -44,8 +44,8 @@ website:
           - lessons/03_SC_quality_control-setup.ipynb
       - section: "Day 1 Self-learning:"
         contents:
-          - lessons/04_cellranger_QC.qmd
-          - lessons/04_SC_quality_control.qmd
+          - lessons/04_cellranger_QC.ipynb
+          - lessons/04_SC_quality_control.ipynb
           - lessons/05_theory_of_PCA.qmd
           
       - section: "Day 2:"

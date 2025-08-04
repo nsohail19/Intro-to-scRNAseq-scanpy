@@ -21,6 +21,39 @@
     "text": "Packages\n\nconda create -n scrna_py python==3.12\nconda activate scrna_py\nconda install jupyter pandas matplotlib \nconda install -c conda-forge scanpy python-igraph leidenalg"
   },
   {
+    "objectID": "lessons/05_theory_of_PCA.html",
+    "href": "lessons/05_theory_of_PCA.html",
+    "title": "Theory of PCA",
+    "section": "",
+    "text": "Approximate time: 90 minutes",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Theory of PCA"
+    ]
+  },
+  {
+    "objectID": "lessons/05_theory_of_PCA.html#learning-objectives",
+    "href": "lessons/05_theory_of_PCA.html#learning-objectives",
+    "title": "Theory of PCA",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\n\nExplain how similarity between cells/samples can be evaluated by the Principal Components Analysis (PCA)",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Theory of PCA"
+    ]
+  },
+  {
+    "objectID": "lessons/05_theory_of_PCA.html#principal-component-analysis-pca",
+    "href": "lessons/05_theory_of_PCA.html#principal-component-analysis-pca",
+    "title": "Theory of PCA",
+    "section": "Principal Component Analysis (PCA)",
+    "text": "Principal Component Analysis (PCA)\nPrincipal Component Analysis (PCA) is a technique used to emphasize variation as well as similarity, and to bring out strong patterns in a dataset; it is one of the methods used for “dimensionality reduction”. We will briefly go over PCA in this lesson (adapted from StatQuests/Josh Starmer’s YouTube video), but we strongly encourage you to explore the video StatQuest’s video for a more thorough explanation/understanding.\n\nBasic explanation with a simple example\nLet’s say you had quantified the expression of four genes in two samples (or cells), you could plot the expression values of those genes with one sample represented on the x-axis and the other sample on the y-axis as shown below:\n\n\n\nYou could draw a line through the data in the direction representing the most variation, which is on the diagonal in this example. The maximum variation in the dataset is between the genes that make up the two endpoints of this line.\nWe also see the genes vary somewhat above and below the line. We could draw another line through the data representing the second most amount of variation in the data, since this plot is in 2D (2 axes).\n\n\n\nThe genes near the ends of each line would be those with the highest variation; these genes have the greatest influence on the direction of the line, mathematically.\n\n\n\nFor example, a small change in the value of Gene C would greatly change the direction of the longer line, whereas a small change in Gene A or Gene D would have little affect on it.\n\n\n\nWe could also rotate the entire plot and view the lines representing the variation as left-to-right and up-and-down. We see most of the variation in the data is left-to-right (longer line) and the second most variation in the data is up-and-down (shorter line). You can now think of these lines as the axes that represent the variation. These axes are essentially the “Principal Components”, with PC1 representing the most variation in the data and PC2 representing the second most variation in the data.\n\n\n\nNow, what if we had three samples/cells, then we would have an extra direction in which we could have variation (3D). Therefore, if we have N samples/cells we would have N-directions of variation or N principal components (PCs)! Once these PCs have been calculated, the PC that deals with the largest variation in the dataset is designated PC1, and the next one is designated PC2 and so on.\nOnce the PCs have been determined for an dataset, we have to figure out how each sample/cell fits back into that context to enable us to visualize the similarities/dissimilarities in an intuitive manner. The question here is “what is sample_X’s score for a given PC based on the gene expression in sample_X?”. This is the actual step where the dimensionality is reduced, since you plot PC scores for each sample/cell on the final PCA plot.\nPC scores are calculated for all sample-PC pairs as described in the steps and schematic below:\n\nFirst, each gene is assigned an “influence” score based on how much it influenced each PC. Genes that did not have any influence on a given PC get scores near zero, while genes with more influence receive larger scores. Genes on the ends of a PC line will have a larger influence, so they would receive larger scores but with opposite signs.\n\n\n\n\n\nOnce the influence has been determined, the score for each sample is calculated using the following equation:\nSample1 PC1 score = (read count * influence) + … for all genes\n\nFor our 2-sample example, the following is how the scores would be calculated:\n## Sample1\nPC1 score = (4 * -2) + (1 * -10) + (8 * 8) + (5 * 1) = 51\nPC2 score = (4 * 0.5) + (1 * 1) + (8 * -5) + (5 * 6) = -7\n\n## Sample2\nPC1 score = (5 * -2) + (4 * -10) + (8 * 8) + (7 * 1) = 21\nPC2 score = (5 * 0.5) + (4 * 1) + (8 * -5) + (7 * 6) = 8.5\nHere is a schematic that goes over the first 2 steps:\n\n\n\n\nOnce these scores are calculated for all the PCs, they can be plotted on a simple scatter plot. Below is the plot for the example here, going from the 2D matrix to a 2D plot:",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Theory of PCA"
+    ]
+  },
+  {
     "objectID": "lessons/03_SC_quality_control-setup.html",
     "href": "lessons/03_SC_quality_control-setup.html",
     "title": "Quality Control Setup",
@@ -131,18 +164,15 @@
     ]
   },
   {
-    "objectID": "schedule/schedule.html",
-    "href": "schedule/schedule.html",
-    "title": "Introduction to Single-cell RNA-seq Schedule",
-    "section": "",
-    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
-  },
-  {
-    "objectID": "schedule/schedule.html#pre-reading",
-    "href": "schedule/schedule.html#pre-reading",
-    "title": "Introduction to Single-cell RNA-seq Schedule",
-    "section": "",
-    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
+    "objectID": "lessons/03_SC_quality_control-setup.html#layers",
+    "href": "lessons/03_SC_quality_control-setup.html#layers",
+    "title": "Quality Control Setup",
+    "section": "Layers",
+    "text": "Layers\nThe .X is considered to be the default layer for calculations. Since we will later normalize our data, we want to ensure that we store our raw counts in a place we can access it later by making use of Layers where we can store multiple different count matrices and access them at will. So to start, we are going to stash away this matrix.\nWe will also specify the copy() function to ensure that the data is copied over, and that it doesn’t just point to .X (which may change in the future).\n\nad.layers[\"raw\"] = ad.X.copy()\nad\n\nAnnData object with n_obs × n_vars = 15756 × 33538\n    obs: 'n_genes', 'sample'\n    var: 'gene_ids', 'feature_types'\n    layers: 'raw'",
+    "crumbs": [
+      "Day 1:",
+      "Quality Control Setup"
+    ]
   },
   {
     "objectID": "lessons/02_SC_generation_of_count_matrix.html",
@@ -200,6 +230,159 @@
     ]
   },
   {
+    "objectID": "schedule/schedule.html",
+    "href": "schedule/schedule.html",
+    "title": "Introduction to Single-cell RNA-seq Schedule",
+    "section": "",
+    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project\n\n\n\n\n\n\n\nTime\nTopic\nInstructor\n\n\n\n\n09:30 - 09:45\nWorkshop introduction\nWill\n\n\n09:45 - 10:35\nIntroduction to Single Cell RNA-sequencing: a practical guide\nDr. Arpita Kulkarni\n\n\n10:35 - 10:40\nBreak\n\n\n\n10:40 - 11:00\nscRNA-seq pre-reading discussion\nAll\n\n\n11:00 - 11:45\nQuality control set-up\nNoor\n\n\n11:45 - 12:00\nOverview of self-learning materials and homework submission\nWill\n\n\n\n\n\nI. Please study the contents and work through all the code within the following lessons:\n\nQuality control of cellranger counts\n\n\nClick here for a preview of this lesson\n\nBefore you start any analysis, it’s important to know whether or not you have good quality cells. At these early stages you can flag or remove samples that could produce erroneous results downstream. In this lesson you will: - Discuss the outputs of cellranger and how to run it  - Review web summary HTML report - Create plots from metrics_summary.csv file \n\nQuality control with additional metrics\n\n\nClick here for a preview of this lesson\n\nIn addition to the QC generated by cellranger, we can also compute some of our own metrics based on the raw data we have loaded into our Seurat object. In this lesson you will: - Compute essential QC metrics for each sample - Create plots to visualize metrics across cells per sample - Critically evaluate each plot and learn what each QC metric means\n\nTheory of PCA\n\n\nClick here for a preview of this lesson\n\nBefore we can begin the next steps of the workflow, we need to make sure you have a good understanding of Principal Components Analysis (PCA). This method will be utilized in the scRNA-seq analysis workflow, and this foundation will help you better navigate those steps and interpretation of results.\n\n\n\nSubmit your work:\n\n\nEach lesson above contains exercises; please go through each of them.\nSubmit your answers to the exercises using this Google form on the day before the next class.\n\n\n\n\n\nIf you get stuck due to an error while runnning code in the lesson, email us"
+  },
+  {
+    "objectID": "schedule/schedule.html#pre-reading",
+    "href": "schedule/schedule.html#pre-reading",
+    "title": "Introduction to Single-cell RNA-seq Schedule",
+    "section": "",
+    "text": "Introduction to scRNA-seq\nRaw data to count matrix\nDownload this project"
+  },
+  {
+    "objectID": "schedule/schedule.html#day-1",
+    "href": "schedule/schedule.html#day-1",
+    "title": "Introduction to Single-cell RNA-seq Schedule",
+    "section": "",
+    "text": "Time\nTopic\nInstructor\n\n\n\n\n09:30 - 09:45\nWorkshop introduction\nWill\n\n\n09:45 - 10:35\nIntroduction to Single Cell RNA-sequencing: a practical guide\nDr. Arpita Kulkarni\n\n\n10:35 - 10:40\nBreak\n\n\n\n10:40 - 11:00\nscRNA-seq pre-reading discussion\nAll\n\n\n11:00 - 11:45\nQuality control set-up\nNoor\n\n\n11:45 - 12:00\nOverview of self-learning materials and homework submission\nWill\n\n\n\n\n\nI. Please study the contents and work through all the code within the following lessons:\n\nQuality control of cellranger counts\n\n\nClick here for a preview of this lesson\n\nBefore you start any analysis, it’s important to know whether or not you have good quality cells. At these early stages you can flag or remove samples that could produce erroneous results downstream. In this lesson you will: - Discuss the outputs of cellranger and how to run it  - Review web summary HTML report - Create plots from metrics_summary.csv file \n\nQuality control with additional metrics\n\n\nClick here for a preview of this lesson\n\nIn addition to the QC generated by cellranger, we can also compute some of our own metrics based on the raw data we have loaded into our Seurat object. In this lesson you will: - Compute essential QC metrics for each sample - Create plots to visualize metrics across cells per sample - Critically evaluate each plot and learn what each QC metric means\n\nTheory of PCA\n\n\nClick here for a preview of this lesson\n\nBefore we can begin the next steps of the workflow, we need to make sure you have a good understanding of Principal Components Analysis (PCA). This method will be utilized in the scRNA-seq analysis workflow, and this foundation will help you better navigate those steps and interpretation of results.\n\n\n\nSubmit your work:\n\n\nEach lesson above contains exercises; please go through each of them.\nSubmit your answers to the exercises using this Google form on the day before the next class.\n\n\n\n\n\nIf you get stuck due to an error while runnning code in the lesson, email us"
+  },
+  {
+    "objectID": "lessons/04_SC_quality_control.html",
+    "href": "lessons/04_SC_quality_control.html",
+    "title": "Quality Control Analysis",
+    "section": "",
+    "text": "Approximate time: 90 minutes",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control Analysis"
+    ]
+  },
+  {
+    "objectID": "lessons/04_SC_quality_control.html#learning-objectives",
+    "href": "lessons/04_SC_quality_control.html#learning-objectives",
+    "title": "Quality Control Analysis",
+    "section": "Learning Objectives:",
+    "text": "Learning Objectives:\n\nConstruct quality control metrics and visually evaluate the quality of the data\nApply appropriate filters to remove low quality cells",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control Analysis"
+    ]
+  },
+  {
+    "objectID": "lessons/04_SC_quality_control.html#generating-quality-metrics",
+    "href": "lessons/04_SC_quality_control.html#generating-quality-metrics",
+    "title": "Quality Control Analysis",
+    "section": "Generating quality metrics",
+    "text": "Generating quality metrics\nWhen data is loaded into Seurat and the initial object is created, there is some basic metadata asssembled for each of the cells in the count matrix. To take a close look at this metadata, let’s view the data frame stored in the obs slot of our adata object:\n\nimport scanpy as sc\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nadata = sc.read_h5ad(\"../results/03_merge.h5ad\")\nadata.obs.head()\n\n\n\n\n\n\n\n\nn_genes\nsample\n\n\n\n\nAAACATACAATGCC-1_ctrl\n874\nctrl\n\n\nAAACATACATTTCC-1_ctrl\n896\nctrl\n\n\nAAACATACCAGAAA-1_ctrl\n725\nctrl\n\n\nAAACATACCAGCTA-1_ctrl\n979\nctrl\n\n\nAAACATACCATGCA-1_ctrl\n362\nctrl\n\n\n\n\n\n\n\nIn order to create the appropriate plots for the quality control analysis, we need to calculate some additional metrics. These include:\n\nNumber of counts per cell total counts in a cell\nNumber of genes detected per UMI: this metric with give us an idea of the complexity of our dataset (more genes detected per UMI, more complex our data)\nMitochondrial ratio: this metric will give us a percentage of cell reads originating from the mitochondrial genes\n\nTo calculate these values, we can use the calculate_qc_metrics() function to automatically generate scores for each cell.\n\nsc.pp.calculate_qc_metrics(adata,\n                           percent_top=None,\n                           log1p=False,\n                           inplace=True)\nadata.obs.head()\n\n\n\n\n\n\n\n\nn_genes\nsample\nn_genes_by_counts\ntotal_counts\n\n\n\n\nAAACATACAATGCC-1_ctrl\n874\nctrl\n874\n2344.0\n\n\nAAACATACATTTCC-1_ctrl\n896\nctrl\n896\n3125.0\n\n\nAAACATACCAGAAA-1_ctrl\n725\nctrl\n725\n2578.0\n\n\nAAACATACCAGCTA-1_ctrl\n979\nctrl\n979\n3261.0\n\n\nAAACATACCATGCA-1_ctrl\n362\nctrl\n362\n746.0",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control Analysis"
+    ]
+  },
+  {
+    "objectID": "lessons/04_SC_quality_control.html#cell-counts",
+    "href": "lessons/04_SC_quality_control.html#cell-counts",
+    "title": "Quality Control Analysis",
+    "section": "Cell counts",
+    "text": "Cell counts\nThe cell counts are determined by the number of unique cellular barcodes detected. For this experiment, between 12,000 -13,000 cells are expected.\nIn an ideal world, you would expect the number of unique cellular barcodes to correpsond to the number of cells you loaded. However, this is not the case as capture rates of cells are only a proportion of what is loaded. For example, the inDrops cell capture efficiency is higher (70-80%) compared to 10X which is between 50-60%.\n\n\n\n\n\n\nNote\n\n\n\nThe capture efficiency could appear much lower if the cell concentration used for library preparation was not accurate. Cell concentration should NOT be determined by FACS machine or Bioanalyzer (these tools are not accurate for concentration determination), instead use a hemocytometer or automated cell counter for calculation of cell concentration._\n\n\nThe cell numbers can also vary by protocol, producing cell numbers that are much higher than what we loaded. For example, during the inDrops protocol, the cellular barcodes are present in the hydrogels, which are encapsulated in the droplets with a single cell and lysis/reaction mixture. While each hydrogel should have a single cellular barcode associated with it, occasionally a hydrogel can have more than one cellular barcode. Similarly, with the 10X protocol there is a chance of obtaining only a barcoded bead in the emulsion droplet (GEM) and no actual cell. Both of these, in addition to the presence of dying cells can lead to a higher number of cellular barcodes than cells.\n\nax = sns.countplot(data=adata.obs, \n                   x=\"sample\",\n                   hue=\"sample\")\nax.set_title(\"NCells\")\n\nText(0.5, 1.0, 'NCells')\n\n\n\n\n\n\n\n\n\nWe see over 15,000 cells per sample, which is quite a bit more than the 12-13,000 expected. It is clear that we likely have some junk ‘cells’ present.",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control Analysis"
+    ]
+  },
+  {
+    "objectID": "lessons/04_SC_quality_control.html#umi-counts-transcripts-per-cell",
+    "href": "lessons/04_SC_quality_control.html#umi-counts-transcripts-per-cell",
+    "title": "Quality Control Analysis",
+    "section": "UMI counts (transcripts) per cell",
+    "text": "UMI counts (transcripts) per cell\nThe UMI counts per cell should generally be above 500, that is the low end of what we expect. If UMI counts are between 500-1000 counts, it is usable but the cells probably should have been sequenced more deeply.\n\nax = sns.histplot(data=adata.obs,\n                  x=\"total_counts\",\n                  hue=\"sample\",\n                  kde=True,\n                  log_scale=True,\n                  alpha=0.2)\nax.axvline(500, color=\"black\")\nax.set_title(\"Total Counts\")\n\nText(0.5, 1.0, 'Total Counts')\n\n\n\n\n\n\n\n\n\nWe can see that majority of our cells in both samples have 1000 UMIs or greater, which is great.\n\nGenes detected per cell\nWe have similar expectations for gene detection as for UMI detection, although it may be a bit lower than UMIs. For high quality data, the proportional histogram should contain a single large peak that represents cells that were encapsulated. If we see a small shoulder to the left of the major peak (not present in our data), or a bimodal distribution of the cells, that can indicate a couple of things. It might be that there are a set of cells that failed for some reason. It could also be that there are biologically different types of cells (i.e. quiescent cell populations, less complex cells of interest), and/or one type is much smaller than the other (i.e. cells with high counts may be cells that are larger in size). Therefore, this threshold should be assessed with other metrics that we describe in this lesson.\n\nax = sns.histplot(data=adata.obs,\n                  x=\"n_genes\",\n                  hue=\"sample\",\n                  kde=True,\n                  log_scale=True,\n                  alpha=0.2)\nax.axvline(300, color=\"black\")\nax.set_title(\"Genes per Cell\")\n\nText(0.5, 1.0, 'Genes per Cell')\n\n\n\n\n\n\n\n\n\n\n\nComplexity\nWe can evaluate each cell in terms of how complex the RNA species are by using a measure called the novelty score. The novelty score is computed by taking the ratio of nGenes over nUMI. If there are many captured transcripts (high nUMI) and a low number of genes detected in a cell, this likely means that you only captured a low number of genes and simply sequenced transcripts from those lower number of genes over and over again. These low complexity (low novelty) cells could represent a specific cell type (i.e. red blood cells which lack a typical transcriptome), or could be due to an artifact or contamination. Generally, we expect the novelty score to be above 0.80 for good quality cells.\n\nadata.obs[\"log10GenesPerUMI\"] = np.log10(adata.obs[\"n_genes\"]) / np.log10(adata.obs[\"total_counts\"])\nadata.obs.head()\n\n\n\n\n\n\n\n\nn_genes\nsample\nn_genes_by_counts\ntotal_counts\nlog10GenesPerUMI\n\n\n\n\nAAACATACAATGCC-1_ctrl\n874\nctrl\n874\n2344.0\n0.872863\n\n\nAAACATACATTTCC-1_ctrl\n896\nctrl\n896\n3125.0\n0.844760\n\n\nAAACATACCAGAAA-1_ctrl\n725\nctrl\n725\n2578.0\n0.838493\n\n\nAAACATACCAGCTA-1_ctrl\n979\nctrl\n979\n3261.0\n0.851262\n\n\nAAACATACCATGCA-1_ctrl\n362\nctrl\n362\n746.0\n0.890686\n\n\n\n\n\n\n\n\nax = sns.histplot(data=adata.obs,\n                  x=\"log10GenesPerUMI\",\n                  hue=\"sample\",\n                  kde=True,\n                  alpha=0.2)\nax.axvline(0.8, color=\"black\")\nax.set_title(\"Genes per Cell\")\n\nText(0.5, 1.0, 'Genes per Cell')\n\n\n\n\n\n\n\n\n\n\n\nMitochondrial Ratio\nSeurat has a convenient function that allows us to calculate the proportion of transcripts mapping to mitochondrial genes. The PercentageFeatureSet() function takes in a pattern argument and searches through all gene identifiers in the dataset for that pattern. Since we are looking for mitochondrial genes, we are searching any gene identifiers that begin with the pattern “MT-”. For each cell, the function takes the sum of counts across all genes (features) belonging to the “Mt-” set, and then divides by the count sum for all genes (features). This value is multiplied by 100 to obtain a percentage value.\n\n\n\n\n\n\nNote\n\n\n\nFor our analysis, rather than using a percentage value we would prefer to work with the ratio value. As such, we will reverse that last step performed by the function by taking the output value and dividing by 100.\n\n\n\nmito_genes = adata.var_names.str.startswith('MT-')\nadata.var['mito'] = mito_genes\nadata.var.head()\n\n\n\n\n\n\n\n\ngene_ids\nfeature_types\nn_cells_by_counts\nmean_counts\npct_dropout_by_counts\ntotal_counts\nmito\n\n\n\n\nMIR1302-2HG\nENSG00000243485\nGene Expression\n0\n0.000000\n100.000000\n0.0\nFalse\n\n\nFAM138A\nENSG00000237613\nGene Expression\n0\n0.000000\n100.000000\n0.0\nFalse\n\n\nOR4F5\nENSG00000186092\nGene Expression\n0\n0.000000\n100.000000\n0.0\nFalse\n\n\nAL627309.1\nENSG00000238009\nGene Expression\n12\n0.000382\n99.961837\n12.0\nFalse\n\n\nAL627309.3\nENSG00000239945\nGene Expression\n1\n0.000032\n99.996820\n1.0\nFalse\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe pattern provided (“^MT-”) works for human gene names. You may need to adjust the pattern argument depending on your organism of interest. Additionally, if you weren’t using gene names as the gene ID then this function wouldn’t work as we have used it above as the pattern will not suffice. Since there are caveats to using this function, it is advisable to manually compute this metric. If you are interested, we have code available to compute this metric on your own.\n\n\n\nsc.pp.calculate_qc_metrics(adata, \n                           qc_vars=(\"mito\"), \n                           inplace=True)\nadata.obs.head()\n\n\n\n\n\n\n\n\nn_genes\nsample\nn_genes_by_counts\ntotal_counts\nlog10GenesPerUMI\nlog1p_n_genes_by_counts\nlog1p_total_counts\npct_counts_in_top_50_genes\npct_counts_in_top_100_genes\npct_counts_in_top_200_genes\npct_counts_in_top_500_genes\ntotal_counts_mito\nlog1p_total_counts_mito\npct_counts_mito\n\n\n\n\nAAACATACAATGCC-1_ctrl\n874\nctrl\n874\n2344.0\n0.872863\n6.774224\n7.760041\n47.568259\n59.129693\n69.197952\n84.044369\n46.0\n3.850147\n1.962457\n\n\nAAACATACATTTCC-1_ctrl\n896\nctrl\n896\n3125.0\n0.844760\n6.799056\n8.047509\n51.904000\n63.456000\n74.080000\n87.328000\n56.0\n4.043051\n1.792000\n\n\nAAACATACCAGAAA-1_ctrl\n725\nctrl\n725\n2578.0\n0.838493\n6.587550\n7.855157\n61.947246\n69.550039\n78.432894\n91.272304\n40.0\n3.713572\n1.551590\n\n\nAAACATACCAGCTA-1_ctrl\n979\nctrl\n979\n3261.0\n0.851262\n6.887553\n8.090096\n52.836553\n62.557498\n71.879791\n85.311254\n45.0\n3.828641\n1.379945\n\n\nAAACATACCATGCA-1_ctrl\n362\nctrl\n362\n746.0\n0.890686\n5.894403\n6.616065\n53.887399\n64.879357\n78.284182\n100.000000\n16.0\n2.833213\n2.144772\n\n\n\n\n\n\n\n\n# We want the value as a ratio\nadata.obs[\"mito_ratio\"] = adata.obs[\"pct_counts_mito\"] / 100\n\nax = sns.histplot(data=adata.obs,\n                  x=\"mito_ratio\",\n                  hue=\"sample\",\n                  kde=True,\n                  alpha=0.2)\nax.axvline(0.2, color=\"black\")\nax.set_title(\"Mitochondrial Ratio\")\n\nText(0.5, 1.0, 'Mitochondrial Ratio')\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nReads per cell\n\n\n\nThis is another metric that can be useful to explore; however, the workflow used would need to save this information to assess. Generally, with this metric you hope to see all of the samples with peaks in relatively the same location between 10,000 and 100,000 reads per cell.\n\n\n\n\nJoint filtering effects\nConsidering any of these QC metrics in isolation can lead to misinterpretation of cellular signals. For example, cells with a comparatively high fraction of mitochondrial counts may be involved in respiratory processes and may be cells that you would like to keep. Likewise, other metrics can have other biological interpretations. A general rule of thumb when performing QC is to set thresholds for individual metrics to be as permissive as possible, and always consider the joint effects of these metrics. In this way, you reduce the risk of filtering out any viable cell populations.\nTwo metrics that are often evaluated together are the number of UMIs and the number of genes detected per cell. Here, we have plotted the number of genes versus the number of UMIs coloured by the fraction of mitochondrial reads. Jointly visualizing the count and gene thresholds and additionally overlaying the mitochondrial fraction, gives a summarized persepective of the quality per cell.\n\ng = sns.FacetGrid(adata.obs, col=\"sample\")\ng.map_dataframe(sns.scatterplot, \n                x=\"total_counts\", \n                y=\"n_genes\", \n                hue=\"mito_ratio\",\n                palette=\"viridis\")\n\n# Log10 scale x- and y-axis\nfor ax in g.axes.flat:\n    ax.set(xscale=\"log\", yscale=\"log\")\n\n# Add lines\ng.refline(x=500, y=300)\n\n# Add colorbar legend\nsm = g.axes[0, 0].collections[0]\nplt.colorbar(sm, \n             ax=g.axes, \n             label=\"mito_ratio\")",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control Analysis"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html",
+    "href": "lessons/04_cellranger_QC.html",
+    "title": "Quality Control of Cellranger Output",
+    "section": "",
+    "text": "Approximate time: 30 minutes",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html#learning-objectives",
+    "href": "lessons/04_cellranger_QC.html#learning-objectives",
+    "title": "Quality Control of Cellranger Output",
+    "section": "Learning Objectives:",
+    "text": "Learning Objectives:\n\nDescribe how cellranger is run and what the ouputs are\nReview the cellranger generated QC report (web summary HTML)\nCreate plots with cellranger metrics",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html#cellranger",
+    "href": "lessons/04_cellranger_QC.html#cellranger",
+    "title": "Quality Control of Cellranger Output",
+    "section": "Cellranger",
+    "text": "Cellranger\nCellranger is a tool created by the company 10x to process single-cell sequencing experiments that were processed with their kits.\nThe algorithm for the single-cell RNA-seq (scRNA) version of cellranger is described by 10x as follows:\n\nImage credit: 10x\nThe main elements of this pipeline are as follows:\n\nAlign FASTQ reads against a reference genome\nFilter low quailty reads and correct cell barcodes/UMIs\nCollapse on PCR duplicates using UMIs\nGenerate raw counts matrix\nIdentify low quality cells to generate a filtered counts matrix\n\nWhile the focus of this workshop is scRNA, we also want to point out that there are other cellranger softwares and modes for different types of single-cell experiments.\n\n\n\nExperiment\nExperiment description\n10x tool\n\n\n\n\nRNA\nRNA\ncellranger count\n\n\nATAC\nATAC\ncellranger-atac count\n\n\nMultiome\nRNA + ATAC\ncellranger-arc count\n\n\nV(D)J\nClonotyping of T and B cells\ncellranger vdj\n\n\nHashtagging\nAntibody/oligo tags to differentiate cells after pooling\ncellranger multi",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html#running-cellranger-on-o2",
+    "href": "lessons/04_cellranger_QC.html#running-cellranger-on-o2",
+    "title": "Quality Control of Cellranger Output",
+    "section": "Running Cellranger on O2",
+    "text": "Running Cellranger on O2\nRunning cellranger requires a lot of time and computational resources in order to process a single sample. Therefore, having access to a High Performance Computing (HPC) cluster is necessary to run it. Some sequencing cores will automatically process samples with cellranger and provide the outputs to you.\nNote that prior to this step, you must have a cellranger compatible reference genome generated. If you are working with mouse or human, 10x has pre-generated the reference which can be downloaded from their website for use. If you are using another organism, cellranger has a mode called mkref which will generate everything needed for a reference from the files you supply (GTF and fasta).\nHere we are showing an example of how to run cellranger count on Harvard’s O2 HPC using SLURM. To run this script, you will have add additional information, such as:\n\nThe name of the project (the results will be placed in a folder of the same name)\nPath to the FASTQ files from your experiment\nPath to the reference genome\n\nIn the following example script, you would just have to change the variable specified in the “Inputs for cellranger” section on eth 10x support site. We have already provided some optimal parameters in terms of runtime and memory for running cellranger count.\nYou do not need to run this script.\n\n#SBATCH --partition=short               # Partition name\n#SBATCH --time=0-06:00                  # Runtime in D-HH:MM format\n#SBATCH --nodes=1                       # Number of nodes (keep at 1)\n#SBATCH --ntasks=1                      # Number of tasks per node (keep at 1)\n#SBATCH --cpus-per-task=16              # CPU cores requested per task (change for threaded jobs)\n#SBATCH --mem=64G                       # Memory needed per node (total)\n#SBATCH --error=jobid_%j.err            # File to which STDERR will be written, including job ID\n#SBATCH --output=jobid_%j.out           # File to which STDOUT will be written, including job ID\n#SBATCH --mail-type=ALL                 # Type of email notification (BEGIN, END, FAIL, ALL)\n\nmodule load gcc\nmodule load cellranger/7.1.0\n\nlocal_cores=16\nlocal_mem=64\n\n# Inputs for cellranger\nproject_name=\"\"                         # Name of output\npath_fastq=\"/path/to/fastq/\"             # Path to folder with FASTQ files for one sample\npath_ref=\"/path/to/reference/\"           # Path to cellranger compatible reference\n\n\ncellranger count \\\n    --id=${project_name} \\\n    --fastqs=${path_fastq} \\\n    --transcriptome=${path_ref} \\\n    --localcores=${local_cores} \\\n    --localmem=${local_mem}\n\n\n  Cell In[2], line 11\n    module load gcc\n           ^\nSyntaxError: invalid syntax",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html#cellranger-outs",
+    "href": "lessons/04_cellranger_QC.html#cellranger-outs",
+    "title": "Quality Control of Cellranger Output",
+    "section": "Cellranger outs",
+    "text": "Cellranger outs\nOnce cellranger has finished running, there will be a folder titled outs/ in a directory named after the project_name variable set above. Generation of all the following files is expected from a succesful completion of the cellranger counts pipeline:\n\n├── cloupe.cloupe\n├── filtered_feature_bc_matrix\n│   ├── barcodes.tsv.gz\n│   ├── features.tsv.gz\n│   └── matrix.mtx.gz\n├── filtered_feature_bc_matrix.h5\n├── metrics_summary.csv\n├── molecule_info.h5\n├── possorted_genome_bam.bam\n├── possorted_genome_bam.bam.bai\n├── raw_feature_bc_matrix\n│   ├── barcodes.tsv.gz\n│   ├── features.tsv.gz\n│   └── matrix.mtx.gz\n├── raw_feature_bc_matrix.h5\n└── web_summary.html\n\n\n  Cell In[3], line 1\n    ├── cloupe.cloupe\n    ^\nSyntaxError: invalid character '├' (U+251C)",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html#web-summary-html-report",
+    "href": "lessons/04_cellranger_QC.html#web-summary-html-report",
+    "title": "Quality Control of Cellranger Output",
+    "section": "Web summary HTML Report",
+    "text": "Web summary HTML Report\nThe Web Summary HTML file is a great resource for looking at the basic quality of your sample before starting on an analysis. 10x has a page describing each metric in depth. There are two pages/tabs included in a scRNA report titled “Summary” and “Gene Expression”.\nWe have included these Web Summary files for the control and stimulated samples as links below. You can download each, and move the HTML to your project data folder:\n\nControl sample report\nStimulated sample report\n\n\n\n\n\n\n\nNote\n\n\n\nSome of the values in these reports will be slightly different from current standards, as these samples were generated using the version 1 chemistry kit and optimization have been made since then.\n\n\n\nSummary\nAt the top of the “Summary” tab, under the “Alerts” header, will be a list of warnings and messages on the quality/important information about the sample. These messages are very informative on what may have gone wrong with the sample or other flags that can be set in the cellranger count run to gain better results.\nUnderneath the “Alerts” header, in green text, are the estimated number of high quality cells in the sample, average reads per cells, and median genes per cell. The number of cells will vary depending on how many were loaded in sample preparation, but some general recommendations are provided below:\n\n500 cells is the lower limit for a good quality sample.\n10x also recommends a minimum of 20,000 reads per cell on average.\nThe median genes per cell varies widely across samples as it depends on sequencing depth and cell type, making it difficult to establish a good minimal value.\n\nThe remaining 4 sections include various metrics that describe the overall quality of the sample. Note that clicking on the grey question mark will show more detailed explanations.\nSequencing\nIncludes information such as the total number of reads and how many of those reads did not meet the length requirements. Additionally, since all barcodes and UMIs are known values (from the kit used to prep scRNA experiments), we can evaluate what percentage of the barcodes and UMIs belong to that whitelist and are valid.\n\nIdeally, you would like to see &gt;75% for almost all of these values since lower values are indicative of a low quality sequencing run or bad sample quality.\nMapping\nPercentage of reads that map to different regions of the reference genome as reported by STAR.\n\nThe percent of reads mapped to the genome should be on the higher end, around 85% or higher. Values that are very low could indicate that the reference genome supplied was incorrect or that the sample was problematic. Otherwise, the expectation for a scRNA runs is that the majority of reads will belong to exonic regions. If nuclei were used instead of whole cells, the percentage of reads mapping to intronic regions will be higher (~45%).\nCells\nHere we can see what an ideal representation of the Barcode Rank Plot looks like. The cells are sorted by the number of UMIs found in the cell to differentiate empty droplets/low quality cells (background) from actual cells.\n\nImage credit: 10x\nThe shape of these plots can indicate a few different things about the sample:\n\nTypical: Clear cliff and knee with separation between cells and background.\nHeterogeneous: Bimodal plot with 2 cliffs and knees, with a clear divide between cells and background.\nCompromised: Round curve with a steep drop-off at the end whih indicated low quality due to many factors.\nCompromised: Defined cliff and knee, but with few barcodes detected could be due to inaccurate cell count or clogging.\n\nThis section additionally describes averages and medians for number of genes and reads in the sample.\nSample\nThe sample section contains important metadata used by cellranger, such as what the Sample ID and the path used for the reference. The chemistry version (which 10x kit was used) and intron flags are also stored here. This information is useful for reproducibility reasons, as the version of cellranger used is also kept.\n\n\n\nGene Expression\nThe “Gene Expression” table contains information downstream of the basic QC, such as:\nt-SNE Projection\nDotplot showing the t-SNE projection of filtered cells colored by UMI counts and clusters. The report allows you select various values of K for the K-means clustering, showing different groupings that can be generated from the data.\n\nLater in the workshop we will spend more time on the intricacies of clustering. The requirements for this QC report would be to see clear separation of cells into groups with defined clusters - representing different cell types.\nTop Features by Cluster\nThis table shows the log2 fold-change and p-value for each gene and cluster after a differential expression analysis is run.\n\nThese top genes per cluster can give a brief peek into the cell type distribution of the sample. If no expected cell type marker genes appear or mitochondrial/ribosomal genes show up frequently, this can be indicative of something wrong with the sample.\nSequencing Saturation and Median Genes per Cell\nThe sequencing saturation plot is a measure of library complexity. In scRNA, more genes can be detected with higher sequencing depth. At a point, you reach sequencing saturation where you do not gain any more meaningful insights which is what the dotted line represents here.\nSimilar to the sequencing saturation plot, looking at the median gene per cells against mean reads per cell will indicate if your have over or under-sequenced. The slope near the endpoint can be used to determine how much benefit would be gained from sequencing more deeply.",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
+    "objectID": "lessons/04_cellranger_QC.html#metrics-evaluation",
+    "href": "lessons/04_cellranger_QC.html#metrics-evaluation",
+    "title": "Quality Control of Cellranger Output",
+    "section": "Metrics evaluation",
+    "text": "Metrics evaluation\nMany of the core pieces of information from the web summary are stored in the metrics_summary.csv. As this is a csv file, we can read it into R and generate plots to include in reports on the general quality of the samples.\nWe have included these csv files for the control and stimulated samples as links below. You can right-click on the link and “Save as…” into your project data folder:\n\nControl sample metrics.csv file\nStimulated sample metrics.csv file\n\nFirst, to read the files in:\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n%matplotlib inline\n\n\nsample_names = [\"ctrl\", \"stim\"]\nsample = \"stim\"\nmetrics = pd.read_csv(f\"../data/{sample}_metrics_summary.csv\")\nmetrics = metrics.transpose()\nmetrics[0] = metrics[0].str.replace(\"%\", \"\")\nmetrics[0] = metrics[0].str.replace(\",\", \"\")\n\nmetrics\n\n\n\n\n\n\n\n\n0\n\n\n\n\nEstimated Number of Cells\n15288\n\n\nMean Reads per Cell\n9823\n\n\nMedian Genes per Cell\nNaN\n\n\nNumber of Reads\n150179402\n\n\nValid Barcodes\n99.4\n\n\nSequencing Saturation\n74.5\n\n\nQ30 Bases in Barcode\n62.1\n\n\nQ30 Bases in RNA Read\n72.6\n\n\nQ30 Bases in UMI\n87.2\n\n\nReads Mapped to Genome\n96.7\n\n\nReads Mapped Confidently to Genome\n95.2\n\n\nReads Mapped Confidently to Intergenic Regions\n1.8\n\n\nReads Mapped Confidently to Intronic Regions\n13.4\n\n\nReads Mapped Confidently to Exonic Regions\n80.1\n\n\nReads Mapped Confidently to Transcriptome\n88.3\n\n\nReads Mapped Antisense to Gene\n4.7\n\n\nFraction Reads in Cells\n96.7\n\n\nTotal Genes Detected\n25268\n\n\nMedian UMI Counts per Cell\n1616",
+    "crumbs": [
+      "Day 1 Self-learning:",
+      "Quality Control of Cellranger Output"
+    ]
+  },
+  {
     "objectID": "lessons/01_intro_to_scRNA-seq.html",
     "href": "lessons/01_intro_to_scRNA-seq.html",
     "title": "Introduction to single-cell RNA-seq",
@@ -241,17 +424,6 @@
     "crumbs": [
       "Pre-reading:",
       "Introduction to single-cell RNA-seq"
-    ]
-  },
-  {
-    "objectID": "lessons/03_SC_quality_control-setup.html#layers",
-    "href": "lessons/03_SC_quality_control-setup.html#layers",
-    "title": "Quality Control Setup",
-    "section": "Layers",
-    "text": "Layers\nThe .X is considered to be the default layer for calculations. Since we will later normalize our data, we want to ensure that we store our raw counts in a place we can access it later by making use of Layers where we can store multiple different count matrices and access them at will. So to start, we are going to stash away this matrix.\nWe will also specify the copy() function to ensure that the data is copied over, and that it doesn’t just point to .X (which may change in the future).\n\nad.layers[\"raw\"] = ad.X.copy()\nad\n\nAnnData object with n_obs × n_vars = 15756 × 33538\n    obs: 'n_genes', 'sample'\n    var: 'gene_ids', 'feature_types'\n    layers: 'raw'",
-    "crumbs": [
-      "Day 1:",
-      "Quality Control Setup"
     ]
   }
 ]

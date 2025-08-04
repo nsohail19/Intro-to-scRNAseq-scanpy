@@ -1,3 +1,4 @@
 /.quarto/
 *ipynb_checkpoints*
 data
+results
