@@ -47,7 +47,7 @@ I. Please **study the contents** and **work through all the code** within the fo
              - Critically evaluate each plot and learn what each QC metric means<br><br>
         </details>
      
-   3. [Theory of PCA](../lessons/05_theory_of_PCA.qmd)
+   3. [Theory of PCA](../lessons/06_theory_of_PCA.qmd)
       <details>
        <summary><i>Click here for a preview of this lesson</i></summary>
          <br>Before we can begin the next steps of the workflow, we need to make sure you have a good understanding of Principal Components Analysis (PCA). This method will be utilized in the scRNA-seq analysis workflow, and this foundation will help you better navigate those steps and interpretation of results.<br><br>
@@ -64,3 +64,12 @@ II. **Submit your work**:
 * ***If you get stuck due to an error*** while runnning code in the lesson, [email us](mailto:hbctraining@hsph.harvard.edu) 
 
 ***
+
+## Day 2
+
+| Time |  Topic  | Instructor |
+|:-----------:|:----------:|:--------:|
+| 09:30 - 10:15 | Self-learning lessons discussion | All |
+| 10:15 - 11:15|  [Normalization and regressing out unwanted variation](../lessons/07_SCT_normalization.ipynb) | Noor |
+| 11:15 - 11:25 | Break |
+| 11:25 - 12:00| [A brief introduction to Integration](08_integration_cca_theory.qmd) | Will |
