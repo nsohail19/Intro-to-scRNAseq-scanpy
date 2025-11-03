@@ -179,7 +179,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#pca" id="toc-pca" class="nav-link" data-scroll-target="#pca">PCA</a></li>
   </ul></li>
   <li><a href="#evaluating-effects-of-cell-cycle" id="toc-evaluating-effects-of-cell-cycle" class="nav-link" data-scroll-target="#evaluating-effects-of-cell-cycle">Evaluating effects of cell cycle</a></li>
+  <li><a href="#normalization-and-regressing-out-sources-of-unwanted-variation-using-sctransform" id="toc-normalization-and-regressing-out-sources-of-unwanted-variation-using-sctransform" class="nav-link" data-scroll-target="#normalization-and-regressing-out-sources-of-unwanted-variation-using-sctransform">Normalization and regressing out sources of unwanted variation using SCTransform</a></li>
   </ul></li>
+  <li><a href="#todo" id="toc-todo" class="nav-link" data-scroll-target="#todo">TODO</a></li>
   </ul>
 </nav>
     </div>
@@ -296,18 +298,19 @@ Note
 <h3 class="anchored" data-anchor-id="set-up">Set-up</h3>
 <p>Let’s start by creating a new script for the normalization and integration steps. Create a new script (File -&gt; New File -&gt; R script), and save it as <code>SCT_integration_analysis.R</code>.</p>
 <p>For the remainder of the workflow we will be mainly using functions available in the Seurat package. Therefore, we need to load the Seurat library in addition to the tidyverse library and a few others listed below.</p>
-<div id="a17b32c7-7a11-4371-b6c2-0cced121729e" class="cell" data-execution_count="7">
+<div id="a17b32c7-7a11-4371-b6c2-0cced121729e" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Single-cell RNA-seq - normalization</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>adata_filt <span class="op">=</span> sc.read_h5ad(<span class="st">"../results/04_filter.h5ad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>adata_filt <span class="op">=</span> sc.read_h5ad(<span class="st">"../results/04_filter.h5ad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Before we make any comparisons across cells, we will <strong>apply a simple normalization.</strong> This is solely for the purpose of exploring the sources of variation in our data.</p>
-<div id="7bd5d839-f7c9-42d9-97e7-3547780c2686" class="cell" data-execution_count="8">
+<div id="7bd5d839-f7c9-42d9-97e7-3547780c2686" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving count data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adata_filt.layers[<span class="st">"counts"</span>] <span class="op">=</span> adata_filt.X.copy()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -320,9 +323,9 @@ Note
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>sc.pp.log1p(adata_filt, layer<span class="op">=</span><span class="st">'log'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s investigate what changes have been made to our scanpy object in the process of running each of these functions. Ideally we would expect to see that we have new layers in our object that correspond with our raw counts, normalized counts, and log-scaled normalized counts.</p>
-<div id="cdab23fb-5e0f-492e-8954-19e576ce1f34" class="cell" data-execution_count="9">
+<div id="cdab23fb-5e0f-492e-8954-19e576ce1f34" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adata_filt.layers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>Layers with keys: counts, median, log</code></pre>
 </div>
 </div>
@@ -338,7 +341,7 @@ Note
 <li><code>n_top_genes</code>: Number of highly-variable genes to keep.</li>
 <li><code>batch_key</code>: If specified, highly-variable genes are selected within each batch separately and merged. This simple process avoids the selection of batch-specific genes and acts as a lightweight batch correction method.</li>
 </ul>
-<div id="2355109a-fb2f-4717-9d6b-231d9f3888d0" class="cell" data-execution_count="27">
+<div id="2355109a-fb2f-4717-9d6b-231d9f3888d0" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># HVG</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sc.pp.highly_variable_genes(adata_filt, layer<span class="op">=</span><span class="st">'counts'</span>, </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                            flavor<span class="op">=</span><span class="st">'seurat_v3'</span>, n_top_genes<span class="op">=</span><span class="dv">4500</span>, </span>
@@ -353,9 +356,9 @@ Note
 <li><code>variances_norm</code>:</li>
 <li><code>highly_variable_nbatches</code>:</li>
 </ul>
-<div id="fde9c93b-40ca-4f5d-bfdc-09375fc4bdd4" class="cell" data-execution_count="28">
+<div id="fde9c93b-40ca-4f5d-bfdc-09375fc4bdd4" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>adata_filt.var.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -484,7 +487,7 @@ Note
 </div>
 </div>
 <p>To visualize the variable genes we calculated, we can make use of the scanpy’s <code>pl.highly_variable_genes()</code>.</p>
-<div id="f9d2ee6a-14e2-4b79-abf8-4bd542828bd2" class="cell" data-execution_count="31">
+<div id="f9d2ee6a-14e2-4b79-abf8-4bd542828bd2" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sc.pl.highly_variable_genes(adata_filt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -495,7 +498,7 @@ Note
 </div>
 </div>
 <p>Alternatively, we can create our own custom plot to represent this data. Where we can visualize the dispersion of all genes, showing a gene’s average expression across all cells on the x-axis and variance on the y-axis. Ideally we want to use genes that have high variance since this can indicate a change in expression depending on populations of cells. Adding labels using the <code>text()</code> helps us understand which genes will be driving shape of our data.</p>
-<div id="073619bc-e2a6-4ab4-a38d-46d3a9bb3087" class="cell" data-execution_count="33">
+<div id="073619bc-e2a6-4ab4-a38d-46d3a9bb3087" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up the shape of the plot</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">5</span>), dpi<span class="op">=</span><span class="dv">150</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -510,23 +513,24 @@ Note
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Grab ONLY the highly variable genes</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot them on top in the color red ('r')</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>adata_filt.uns[<span class="st">'id_hvg'</span>] <span class="op">=</span> np.where(adata_filt.var[<span class="st">'highly_variable'</span>])[<span class="dv">0</span>]</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>x[adata_filt.uns[<span class="st">'id_hvg'</span>]], y<span class="op">=</span>y[adata_filt.uns[<span class="st">'id_hvg'</span>]], ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'HVGs'</span>, color<span class="op">=</span><span class="st">'r'</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the labels </span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">'log2(Mean Expression)'</span>, ylabel<span class="op">=</span><span class="st">'log2(Normalized Variance)'</span>,</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>       title<span class="op">=</span><span class="st">'Mean Expression vs. Normalized Variance of Genes'</span>)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>x[adata_filt.uns[<span class="st">'id_hvg'</span>]], y<span class="op">=</span>y[adata_filt.uns[<span class="st">'id_hvg'</span>]], </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'HVGs'</span>, color<span class="op">=</span><span class="st">'r'</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the labels </span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">'log2(Mean Expression)'</span>, ylabel<span class="op">=</span><span class="st">'log2(Normalized Variance)'</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>       title<span class="op">=</span><span class="st">'Mean Expression vs. Normalized Variance of Genes'</span>)</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the top N variable genes and label them on the plot</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">15</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>top_idx <span class="op">=</span> adata_filt.var[<span class="st">'highly_variable_rank'</span>].nsmallest(N).index</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene_name <span class="kw">in</span> top_idx:</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    ax.text(x[gene_name], y[gene_name], gene_name, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"black"</span>)</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the plot</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the top N variable genes and label them on the plot</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>top_idx <span class="op">=</span> adata_filt.var[<span class="st">'highly_variable_rank'</span>].nsmallest(N).index</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene_name <span class="kw">in</span> top_idx:</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    ax.text(x[gene_name], y[gene_name], gene_name, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"black"</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the plot</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -577,7 +581,7 @@ Note
 <p>For datasets with a larger number of cells, only the PC1 and PC2 scores for each cell are usually plotted, or used for visualization. Since these PCs explain the most variation in the dataset, the expectation is that the cells that are more similar to each other will cluster together with PC1 and PC2.</p>
 </div>
 </div>
-<div id="893bc4d3-ca67-4fcf-a4a8-e9f992ef4223" class="cell" data-execution_count="36">
+<div id="893bc4d3-ca67-4fcf-a4a8-e9f992ef4223" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set X to be our log-normalized data</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>adata_filt.X <span class="op">=</span> adata_filt.layers[<span class="st">'log'</span>]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>sc.tl.pca(adata_filt, n_comps<span class="op">=</span><span class="dv">50</span>, </span>
@@ -585,11 +589,11 @@ Note
 </div>
 <p>In running this function, we have create 2 new slots in our scanpy object. The <code>obsm</code> and <code>varm</code>.</p>
 <p>TODO: What do those stand for?</p>
-<div id="86a7b0d8-f539-4810-993a-2946ddbfa04e" class="cell" data-execution_count="37">
+<div id="86a7b0d8-f539-4810-993a-2946ddbfa04e" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adata_filt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>AnnData object with n_obs × n_vars = 29629 × 14167
-    obs: 'n_genes', 'sample', 'n_genes_by_counts', 'total_counts', 'log10GenesPerUMI', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_100_genes', 'pct_counts_in_top_200_genes', 'pct_counts_in_top_500_genes', 'total_counts_mito', 'log1p_total_counts_mito', 'pct_counts_mito', 'mito_ratio', 'S_score', 'G2M_score', 'phase'
+    obs: 'n_genes', 'sample', 'n_genes_by_counts', 'total_counts', 'log10GenesPerUMI', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_100_genes', 'pct_counts_in_top_200_genes', 'pct_counts_in_top_500_genes', 'total_counts_mito', 'log1p_total_counts_mito', 'pct_counts_mito', 'mito_ratio'
     var: 'gene_ids', 'feature_types', 'n_cells_by_counts', 'mean_counts', 'pct_dropout_by_counts', 'total_counts', 'mito', 'log1p_mean_counts', 'log1p_total_counts', 'n_counts', 'highly_variable', 'highly_variable_rank', 'means', 'variances', 'variances_norm', 'highly_variable_nbatches'
     uns: 'log1p', 'hvg', 'id_hvg', 'pca'
     obsm: 'X_pca'
@@ -598,9 +602,9 @@ Note
 </div>
 </div>
 <p>The <code>X_pca</code> contains the scores for each cell and Principal Component.</p>
-<div id="99f42fb5-2d80-4a80-9ed8-56536350454b" class="cell" data-execution_count="39">
+<div id="99f42fb5-2d80-4a80-9ed8-56536350454b" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adata_filt.obsm[<span class="st">"X_pca"</span>][<span class="dv">1</span>:<span class="dv">5</span>, <span class="dv">1</span>:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="39">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>array([[-5.464761  ,  1.4467708 ,  1.4707652 , -0.47625712],
        [-5.909921  , -1.1509504 , -1.0321858 ,  0.23781052],
        [-5.492779  , -1.847269  , -0.78184634,  0.61416733],
@@ -609,7 +613,7 @@ Note
 </div>
 </div>
 <p>With these scores, we can plot how the cells lay on PC1 and PC2 with <code>pp.pca</code> where the <code>color</code> argument tells us which metadata column to color the cells by.</p>
-<div id="53f4deeb-946e-44e8-bcd6-d30ffc02a53a" class="cell" data-execution_count="42">
+<div id="53f4deeb-946e-44e8-bcd6-d30ffc02a53a" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sc.pl.pca(adata_filt, color<span class="op">=</span>[<span class="st">"sample"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -625,7 +629,7 @@ Note
 <h2 class="anchored" data-anchor-id="evaluating-effects-of-cell-cycle">Evaluating effects of cell cycle</h2>
 <p>After scoring the cells for cell cycle, we would like to <strong>determine whether cell cycle is a major source of variation in our dataset using PCA</strong>.</p>
 <p>We have provided a list of human cell cycle markers for you here. However, if you are not working with human data we have <a href="Aside_cell_cycle_scoring.qmd">additional materials</a> detailing how to acquire cell cycle markers for other organisms of interest.</p>
-<div id="22fd0c14-1626-4afd-bc73-e04dc270d972" class="cell" data-execution_count="43">
+<div id="22fd0c14-1626-4afd-bc73-e04dc270d972" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>g2m_genes <span class="op">=</span> [</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NCAPD2"</span>, <span class="st">"ANLN"</span>, <span class="st">"TACC3"</span>, <span class="st">"HMMR"</span>, <span class="st">"GTSE1"</span>, <span class="st">"NDC80"</span>, <span class="st">"AURKA"</span>, <span class="st">"TPX2"</span>,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BIRC5"</span>, <span class="st">"G2E3"</span>, <span class="st">"CBX5"</span>, <span class="st">"RANGAP1"</span>, <span class="st">"CTCF"</span>, <span class="st">"CDCA3"</span>, <span class="st">"TTK"</span>, <span class="st">"SMC4"</span>,</span>
@@ -645,7 +649,7 @@ Note
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TYMS"</span>, <span class="st">"BLM"</span>, <span class="st">"PRIM1"</span>, <span class="st">"UHRF1"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To assign each cell a score based on its expression of G2/M and S phase markers, we can use the function <code>score_genes_cell_cycle()</code>. This function calculates cell cycle phase scores based on canonical markers that required as input.</p>
-<div id="a7b242b4-5c2b-4d60-afdf-bf7afee93085" class="cell" data-execution_count="44">
+<div id="a7b242b4-5c2b-4d60-afdf-bf7afee93085" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sc.tl.score_genes_cell_cycle(adata_filt, s_genes, g2m_genes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>WARNING: genes are not in var_names and ignored: Index(['RAD51', 'CDC45', 'E2F8', 'DTL', 'EXO1', 'UHRF1'], dtype='object')
@@ -660,9 +664,9 @@ WARNING: genes are not in var_names and ignored: Index(['ANLN', 'HJURP', 'PIMREG
 <li>phase</li>
 </ul>
 <p>Have been added to our <code>obs</code> dataframe.</p>
-<div id="9d5b2a70-104a-47dc-b731-0d4724743952" class="cell" data-execution_count="45">
+<div id="9d5b2a70-104a-47dc-b731-0d4724743952" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>adata_filt.obs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 
 
@@ -802,7 +806,7 @@ WARNING: genes are not in var_names and ignored: Index(['ANLN', 'HJURP', 'PIMREG
 </div>
 </div>
 </div>
-<div id="4cb8f77e-cf98-4575-bf43-93a6eb550e6a" class="cell" data-execution_count="46">
+<div id="4cb8f77e-cf98-4575-bf43-93a6eb550e6a" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sc.pl.pca(adata_filt, color<span class="op">=</span>[<span class="st">"phase"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -813,7 +817,7 @@ WARNING: genes are not in var_names and ignored: Index(['ANLN', 'HJURP', 'PIMREG
 </div>
 </div>
 <p>To more clearly see the distribution for each phase, we can emphasize the <code>groups</code> and put the plots side-by-side.</p>
-<div id="05e74f2f-e003-4309-aa7e-78872c358d70" class="cell" data-execution_count="51">
+<div id="05e74f2f-e003-4309-aa7e-78872c358d70" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create plot with the correct dimensions</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -870,17 +874,260 @@ This second PCA plot is <b>post-regression</b>, and displays how effective the r
 <div class="callout-body-container callout-body">
 <p>Mitochondrial expression is another factor which can greatly influence clustering. Oftentimes, it is useful to regress out variation due to mitochondrial expression. However, if the differences in mitochondrial gene expression represent a biological phenomenon that may help to distinguish cell clusters, then we advise not regressing this out. In this exercise, we can perform a quick check similar to looking at cell cycle and decide whether or not we want to regress it out.</p>
 <p>First, turn the mitochondrial ratio variable into a new categorical variable based on quartiles (using the code below):</p>
-<div id="9850c959-c42e-419e-8e03-be33cd748d0f" class="cell" data-execution_count="60">
+<div id="9850c959-c42e-419e-8e03-be33cd748d0f" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>np.percentile(adata_filt.obs[<span class="st">"pct_counts_mito"</span>], [<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="60">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>array([ 0.        ,  1.43786371,  1.99296606,  2.66920877, 14.46428585])</code></pre>
 </div>
 </div>
+<div id="4fb7297a-875a-42ff-8851-0bcc94bc9ddf" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>adata_filt.obs[<span class="st">'mitoFr'</span>] <span class="op">=</span> pd.cut(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    adata_filt.obs[<span class="st">'pct_counts_mito'</span>],</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span>[<span class="op">-</span>np.inf, <span class="fl">1.44</span>, <span class="fl">1.99</span>, <span class="fl">2.67</span>, np.inf],</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"Medium high"</span>, <span class="st">"High"</span>])</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>adata_filt.obs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
 
 
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">n_genes</th>
+<th data-quarto-table-cell-role="th">sample</th>
+<th data-quarto-table-cell-role="th">n_genes_by_counts</th>
+<th data-quarto-table-cell-role="th">total_counts</th>
+<th data-quarto-table-cell-role="th">log10GenesPerUMI</th>
+<th data-quarto-table-cell-role="th">log1p_n_genes_by_counts</th>
+<th data-quarto-table-cell-role="th">log1p_total_counts</th>
+<th data-quarto-table-cell-role="th">pct_counts_in_top_50_genes</th>
+<th data-quarto-table-cell-role="th">pct_counts_in_top_100_genes</th>
+<th data-quarto-table-cell-role="th">pct_counts_in_top_200_genes</th>
+<th data-quarto-table-cell-role="th">pct_counts_in_top_500_genes</th>
+<th data-quarto-table-cell-role="th">total_counts_mito</th>
+<th data-quarto-table-cell-role="th">log1p_total_counts_mito</th>
+<th data-quarto-table-cell-role="th">pct_counts_mito</th>
+<th data-quarto-table-cell-role="th">mito_ratio</th>
+<th data-quarto-table-cell-role="th">S_score</th>
+<th data-quarto-table-cell-role="th">G2M_score</th>
+<th data-quarto-table-cell-role="th">phase</th>
+<th data-quarto-table-cell-role="th">mitoFr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACAATGCC-1_ctrl</td>
+<td>874</td>
+<td>ctrl</td>
+<td>874</td>
+<td>2344.0</td>
+<td>0.872863</td>
+<td>6.774224</td>
+<td>7.760041</td>
+<td>47.568259</td>
+<td>59.129693</td>
+<td>69.197952</td>
+<td>84.044369</td>
+<td>46.0</td>
+<td>3.850147</td>
+<td>1.962457</td>
+<td>0.019625</td>
+<td>0.005933</td>
+<td>0.016737</td>
+<td>G2M</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACATTTCC-1_ctrl</td>
+<td>896</td>
+<td>ctrl</td>
+<td>896</td>
+<td>3125.0</td>
+<td>0.844760</td>
+<td>6.799056</td>
+<td>8.047509</td>
+<td>51.904000</td>
+<td>63.456000</td>
+<td>74.080000</td>
+<td>87.328000</td>
+<td>56.0</td>
+<td>4.043051</td>
+<td>1.792000</td>
+<td>0.017920</td>
+<td>0.003995</td>
+<td>0.003142</td>
+<td>S</td>
+<td>Medium</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCAGAAA-1_ctrl</td>
+<td>725</td>
+<td>ctrl</td>
+<td>725</td>
+<td>2578.0</td>
+<td>0.838493</td>
+<td>6.587550</td>
+<td>7.855157</td>
+<td>61.947246</td>
+<td>69.550039</td>
+<td>78.432894</td>
+<td>91.272304</td>
+<td>40.0</td>
+<td>3.713572</td>
+<td>1.551590</td>
+<td>0.015516</td>
+<td>-0.013314</td>
+<td>-0.032831</td>
+<td>G1</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AAACATACCAGCTA-1_ctrl</td>
+<td>979</td>
+<td>ctrl</td>
+<td>979</td>
+<td>3261.0</td>
+<td>0.851262</td>
+<td>6.887553</td>
+<td>8.090096</td>
+<td>52.836553</td>
+<td>62.557498</td>
+<td>71.879791</td>
+<td>85.311254</td>
+<td>45.0</td>
+<td>3.828641</td>
+<td>1.379945</td>
+<td>0.013799</td>
+<td>-0.017613</td>
+<td>-0.001563</td>
+<td>G1</td>
+<td>Low</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AAACATACCATGCA-1_ctrl</td>
+<td>362</td>
+<td>ctrl</td>
+<td>362</td>
+<td>746.0</td>
+<td>0.890686</td>
+<td>5.894403</td>
+<td>6.616065</td>
+<td>53.887399</td>
+<td>64.879357</td>
+<td>78.284182</td>
+<td>100.000000</td>
+<td>16.0</td>
+<td>2.833213</td>
+<td>2.144772</td>
+<td>0.021448</td>
+<td>0.017205</td>
+<td>-0.032109</td>
+<td>S</td>
+<td>Medium high</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ol type="1">
+<li><p>Next, plot the PCA similar to how we did with cell cycle regression. <em>Hint: use the new <code>mitoFr</code>variable to split cells and color them accordingly.</em></p></li>
+<li><p>Evaluate the PCA plot generated in #2.</p>
+<ul>
+<li>Determine whether or not you observe an effect.</li>
+<li>Describe what you see.</li>
+<li>Would you regress out mitochondrial fraction as a source of unwanted variation?</li>
+</ul></li>
+</ol>
+<div id="bdfe6078-a1af-4188-b236-58ed3f85bc7a" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create plot with the correct dimensions</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">6</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot each Mitochonrdrial ratio</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>sc.pl.pca(adata_filt, color<span class="op">=</span>[<span class="st">"mitoFr"</span>], groups<span class="op">=</span>[<span class="st">"Low"</span>], ax<span class="op">=</span>axes[<span class="dv">0</span>, <span class="dv">0</span>], </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>          show<span class="op">=</span><span class="va">False</span>, title<span class="op">=</span><span class="st">"Low"</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>sc.pl.pca(adata_filt, color<span class="op">=</span>[<span class="st">"mitoFr"</span>], groups<span class="op">=</span>[<span class="st">"Medium"</span>], ax<span class="op">=</span>axes[<span class="dv">0</span>, <span class="dv">1</span>], </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>          show<span class="op">=</span><span class="va">False</span>, title<span class="op">=</span><span class="st">"Medium"</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>sc.pl.pca(adata_filt, color<span class="op">=</span>[<span class="st">"mitoFr"</span>], groups<span class="op">=</span>[<span class="st">"Medium high"</span>], ax<span class="op">=</span>axes[<span class="dv">1</span>, <span class="dv">0</span>], </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>          show<span class="op">=</span><span class="va">False</span>, title<span class="op">=</span><span class="st">"Medium high"</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>sc.pl.pca(adata_filt, color<span class="op">=</span>[<span class="st">"mitoFr"</span>], groups<span class="op">=</span>[<span class="st">"High"</span>], ax<span class="op">=</span>axes[<span class="dv">1</span>, <span class="dv">1</span>], </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>          show<span class="op">=</span><span class="va">False</span>, title<span class="op">=</span><span class="st">"High"</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_SCT_normalization_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
+<section id="normalization-and-regressing-out-sources-of-unwanted-variation-using-sctransform" class="level2">
+<h2 class="anchored" data-anchor-id="normalization-and-regressing-out-sources-of-unwanted-variation-using-sctransform">Normalization and regressing out sources of unwanted variation using SCTransform</h2>
+<p>In the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1874-1">Hafemeister and Satija, 2019 paper</a> the authors explored the issues with simple transformations. Specifically they evaluated the standard log normalization approach and found that genes with different abundances are affected differently and that <strong>effective normalization (using the log transform) is only observed with low/medium abundance genes (Figure 1D, below)</strong>. Additionally, <strong>substantial imbalances in variance were observed with the log-normalized data (Figure 1E, below)</strong>. In particular, cells with low total UMI counts exhibited disproportionately higher variance for high-abundance genes, dampening the variance contribution from other gene abundances.&nbsp;</p>
+<p align="center">
+<img src="../img/SCT_Fig1.png" width="600">
+</p>
+<p><em><strong>Image credit:</strong> Hafemeister C and Satija R. Normalization and variance stabilization of single-cell RNA-seq data using regularized negative binomial regression, Genom Biology 2019 (https://doi.org/10.1101/576827)</em></p>
+<p>The conclusion is, <strong>we cannot treat all genes the same.</strong></p>
+<p>The proposed solution was the use of <strong>Pearson residuals for transformation</strong>, as implemented in Seurat’s <code>SCTransform</code> function. With this approach:</p>
+<ul>
+<li>Measurements are multiplied by a gene-specific weight</li>
+<li>Each gene is weighted based on how much evidence there is that it is non-uniformly expressed across cells</li>
+<li>More evidence == more of a weight; Genes that are expressed in only a small fraction of cells will be favored (useful for finding rare cell populations)</li>
+<li>Not just a consideration of the expression level is, but also the distribution of expression</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why don’t we just run SCTransform to normalize?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While the functions <code>NormalizeData</code>, <code>VariableFeatures</code> and <code>ScaleData</code> can be replaced by the function <code>SCTransform</code>, the latter uses a more sophisticated way to perform the normalization and scaling. We suggest using log normalization because it is good to observe the data and any trends using a simple transformation, as methods like SCT can alter the data in a way that is not as intuitive to interpret.</p>
+</div>
+</div>
+<p>Now that we have established which effects are observed in our data, we can use the SCTransform method to regress out these effects. The <strong>SCTransform</strong> method was proposed as a better alternative to the log transform normalization method that we used for exploring sources of unwanted variation. The method not only <strong>normalizes data, but it also performs a variance stabilization and allows for additional covariates to be regressed out</strong>.</p>
+<p>As described earlier, all genes cannot be treated the same. As such, the <strong>SCTransform method constructs a generalized linear model (GLM) for each gene</strong> with UMI counts as the response and sequencing depth as the explanatory variable. Information is pooled across genes with similar abundances, to regularize parameter estimates and <strong>obtain residuals which represent effectively normalized data values</strong> which are no longer correlated with sequencing depth.</p>
+<p align="center">
+<img src="../img/SCT_UMAP.png" width="400">
+</p>
+<p><em><strong>Image credit:</strong> Hafemeister C and Satija R. Normalization and variance stabilization of single-cell RNA-seq data using regularized negative binomial regression, Genom Biology 2019 (https://doi.org/10.1101/576827)</em></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since the UMI counts are part of the GLM, the effects are automatically regressed out. The user can include any additional covariates (<code>vars.to.regress</code>) that may have an effect on expression and will be included in the model.</p>
+</div>
+</div>
+<p>To run the SCTransform we have the code below as an example. <strong>Do not run this code</strong>, as we prefer to run this for each sample separately in the next section below.</p>
+</section>
+</section>
+<section id="todo" class="level1">
+<h1>TODO</h1>
+<p>There is no SCTransform implementation in python where we could directly re-use the materials. The best I’ve found is this, but it would require dependencies to be installed and does not appear to be actively maintained https://github.com/atarashansky/SCTransformPy</p>
+<p>Maybe - https://www.sc-best-practices.org/preprocessing_visualization/normalization.html#analytic-pearson-residuals</p>
+<div id="1482ad43-416e-458e-ab46-27e50bb95a1e" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># adata_filt.write_h5ad("../results/07_normalized.h5ad")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

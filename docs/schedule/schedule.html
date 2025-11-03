@@ -299,15 +299,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: center;">11:25 - 12:00</td>
-<td style="text-align: center;"><a href="08_integration_cca_theory.qmd">A brief introduction to Integration</a></td>
+<td style="text-align: center;"><a href="../lessons/08_integration_cca_theory.html">A brief introduction to Integration</a></td>
 <td style="text-align: center;">Will</td>
 </tr>
 </tbody>
 </table>
+<section id="before-the-next-class-1" class="level3">
+<h3 class="anchored" data-anchor-id="before-the-next-class-1">Before the next class:</h3>
+<p>I. Please <strong>study the contents</strong> and <strong>work through all the code</strong> within the following lessons:</p>
+<ol type="1">
+<li><a href="../lessons/09_integration_code_harmony.ipynb">Running CCA integration and complex integration tasks</a>
+<details>
+<summary>
+<i>Click here for a preview of this lesson</i>
+</summary>
+<br>In class, we described the theory of integration and in what situations we would implement it. <br><br>In this lesson you will:<br> - Run the code to implement CCA integration <br> - Evaluate the effect of integration on the UMAP <br> - Learn about methods for complex integration tasks (Harmonizing samples) <br>
+</details></li>
+<li><a href="../lessons/10_clustering_cells_SCT.html">Clustering</a>
+<details>
+<summary>
+<i>Click here for a preview of this lesson</i>
+</summary>
+<br>From the UMAP visualization of our data we can see that the cells are positioned into groups. Our next task is to isolate clusters of cells that are most similar to one another based on gene expression. <br><br>In this lesson you will:<br> - Learn the theory behind clustering and how it is performed in Seurat<br> - Cluster cells and visualize them on the UMAP<br>
+</details></li>
+<li><a href="../lessons/11_clustering_quality_control.ipynb">Clustering quality control</a>
+<details>
+<summary>
+<i>Click here for a preview of this lesson</i>
+</summary>
+<br>After separating cells into clusters, it is crtical to evaluate whether they are biologically meaningful or not. At this point we can also decide if we need to re-cluster and/or potentialy go back to a previous QC step. <br><br>In this lesson you will:<br> - Check to see that clusters are not influenced by uninteresting sources of variation<br> - Check to see whether the major principal components are driving the different clusters<br> - Explore the cell type identities by looking at the expression for known markers across the clusters.<br>
+</details></li>
+</ol>
 
 
 <!-- -->
 
+</section>
 </section>
 </section>
 
@@ -836,7 +863,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 09:30 - 10:15 <span class="pp">|</span> Self-learning lessons discussion <span class="pp">|</span> All <span class="pp">|</span></span>
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 10:15 - 11:15<span class="pp">|</span>  <span class="co">[</span><span class="ot">Normalization and regressing out unwanted variation</span><span class="co">](../lessons/07_SCT_normalization.ipynb)</span> <span class="pp">|</span> Noor <span class="pp">|</span></span>
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:15 - 11:25 <span class="pp">|</span> Break <span class="pp">|</span></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:25 - 12:00<span class="pp">|</span> <span class="co">[</span><span class="ot">A brief introduction to Integration</span><span class="co">](08_integration_cca_theory.qmd)</span> <span class="pp">|</span> Will <span class="pp">|</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:25 - 12:00<span class="pp">|</span> <span class="co">[</span><span class="ot">A brief introduction to Integration</span><span class="co">](../lessons/08_integration_cca_theory.ipynb)</span> <span class="pp">|</span> Will <span class="pp">|</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### Before the next class:</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>I. Please **study the contents** and **work through all the code** within the following lessons:</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="co">[</span><span class="ot">Running CCA integration and complex integration tasks</span><span class="co">](../lessons/09_integration_code_harmony.ipynb)</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In class, we described the theory of integration and in what situations we would implement it. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Run the code to implement CCA integration <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Evaluate the effect of integration on the UMAP <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Learn about methods for complex integration tasks (Harmonizing samples) <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">details</span><span class="dt">&gt;</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="co">[</span><span class="ot">Clustering</span><span class="co">](../lessons/10_clustering_cells_SCT.ipynb)</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>         <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>From the UMAP visualization of our data  we can see that the cells are positioned into groups. Our next task is to isolate clusters of cells that are most similar to one another based on gene expression. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Learn the theory behind clustering and how it is performed in Seurat<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Cluster cells and visualize them on the UMAP<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">details</span><span class="dt">&gt;</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="co">[</span><span class="ot">Clustering quality control</span><span class="co">](../lessons/11_clustering_quality_control.ipynb)</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>         <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>After separating cells into clusters, it is crtical to evaluate whether they are biologically meaningful or not. At this point we can also decide if we need to re-cluster and/or potentialy go back to a previous QC step.</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>         <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">           - </span>Check to see that clusters are not influenced by uninteresting sources of variation<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">           - </span>Check to see whether the major principal components are driving the different clusters<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">           - </span>Explore the cell type identities by looking at the expression for known markers across the clusters.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">details</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

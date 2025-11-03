@@ -72,4 +72,35 @@ II. **Submit your work**:
 | 09:30 - 10:15 | Self-learning lessons discussion | All |
 | 10:15 - 11:15|  [Normalization and regressing out unwanted variation](../lessons/07_SCT_normalization.ipynb) | Noor |
 | 11:15 - 11:25 | Break |
-| 11:25 - 12:00| [A brief introduction to Integration](08_integration_cca_theory.qmd) | Will |
+| 11:25 - 12:00| [A brief introduction to Integration](../lessons/08_integration_cca_theory.ipynb) | Will |
+
+### Before the next class:
+I. Please **study the contents** and **work through all the code** within the following lessons:
+
+1. [Running CCA integration and complex integration tasks](../lessons/09_integration_code_harmony.ipynb)
+      <details>
+       <summary><i>Click here for a preview of this lesson</i></summary>
+        <br>In class, we described the theory of integration and in what situations we would implement it. <br><br>In this lesson you will:<br>
+             - Run the code to implement CCA integration <br>
+             - Evaluate the effect of integration on the UMAP <br>
+             - Learn about methods for complex integration tasks (Harmonizing samples) <br>
+        </details>
+   
+2. [Clustering](../lessons/10_clustering_cells_SCT.ipynb)
+      <details>
+       <summary><i>Click here for a preview of this lesson</i></summary>
+         <br>From the UMAP visualization of our data  we can see that the cells are positioned into groups. Our next task is to isolate clusters of cells that are most similar to one another based on gene expression. <br><br>In this lesson you will:<br>
+             - Learn the theory behind clustering and how it is performed in Seurat<br>
+             - Cluster cells and visualize them on the UMAP<br>
+        </details>
+
+3. [Clustering quality control](../lessons/11_clustering_quality_control.ipynb)
+      <details>
+       <summary><i>Click here for a preview of this lesson</i></summary>
+         <br>After separating cells into clusters, it is crtical to evaluate whether they are biologically meaningful or not. At this point we can also decide if we need to re-cluster and/or potentialy go back to a previous QC step.
+         <br><br>In this lesson you will:<br>
+           - Check to see that clusters are not influenced by uninteresting sources of variation<br>
+           - Check to see whether the major principal components are driving the different clusters<br>
+           - Explore the cell type identities by looking at the expression for known markers across the clusters.<br>
+        </details>
+
