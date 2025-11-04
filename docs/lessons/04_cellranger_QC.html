@@ -163,18 +163,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives:</a></li>
-  <li><a href="#single-cell-rna-seq-quality-control-of-cellranger-output" id="toc-single-cell-rna-seq-quality-control-of-cellranger-output" class="nav-link" data-scroll-target="#single-cell-rna-seq-quality-control-of-cellranger-output">Single-cell RNA-seq: Quality control of Cellranger output</a>
-  <ul class="collapse">
+  <li><a href="#quality-control-of-cellranger-output" id="toc-quality-control-of-cellranger-output" class="nav-link" data-scroll-target="#quality-control-of-cellranger-output">Quality control of Cellranger output</a></li>
   <li><a href="#cellranger" id="toc-cellranger" class="nav-link" data-scroll-target="#cellranger">Cellranger</a></li>
-  <li><a href="#running-cellranger-on-o2" id="toc-running-cellranger-on-o2" class="nav-link" data-scroll-target="#running-cellranger-on-o2">Running Cellranger on O2</a></li>
+  <li><a href="#running-cellranger-on-o2" id="toc-running-cellranger-on-o2" class="nav-link" data-scroll-target="#running-cellranger-on-o2">Running Cellranger on O2</a>
+  <ul class="collapse">
   <li><a href="#cellranger-outs" id="toc-cellranger-outs" class="nav-link" data-scroll-target="#cellranger-outs">Cellranger outs</a></li>
+  </ul></li>
   <li><a href="#web-summary-html-report" id="toc-web-summary-html-report" class="nav-link" data-scroll-target="#web-summary-html-report">Web summary HTML Report</a>
   <ul class="collapse">
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
-  <li><a href="#gene-expression" id="toc-gene-expression" class="nav-link" data-scroll-target="#gene-expression">Gene Expression</a></li>
+  <li><a href="#sequencing" id="toc-sequencing" class="nav-link" data-scroll-target="#sequencing">Sequencing</a></li>
+  <li><a href="#mapping" id="toc-mapping" class="nav-link" data-scroll-target="#mapping">Mapping</a></li>
+  <li><a href="#cells" id="toc-cells" class="nav-link" data-scroll-target="#cells">Cells</a></li>
+  <li><a href="#sample" id="toc-sample" class="nav-link" data-scroll-target="#sample">Sample</a></li>
+  <li><a href="#gene-expression" id="toc-gene-expression" class="nav-link" data-scroll-target="#gene-expression">Gene Expression</a>
+  <ul class="collapse">
+  <li><a href="#t-sne-projection" id="toc-t-sne-projection" class="nav-link" data-scroll-target="#t-sne-projection">t-SNE Projection</a></li>
+  <li><a href="#top-features-by-cluster" id="toc-top-features-by-cluster" class="nav-link" data-scroll-target="#top-features-by-cluster">Top Features by Cluster</a></li>
+  <li><a href="#sequencing-saturation-and-median-genes-per-cell" id="toc-sequencing-saturation-and-median-genes-per-cell" class="nav-link" data-scroll-target="#sequencing-saturation-and-median-genes-per-cell">Sequencing Saturation and Median Genes per Cell</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#metrics-evaluation" id="toc-metrics-evaluation" class="nav-link" data-scroll-target="#metrics-evaluation">Metrics evaluation</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -183,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Quality Control of Cellranger Output</h1>
+<div class="quarto-title-block"><div><h1 class="title">Quality Control of Cellranger Output</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -221,10 +230,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Create plots with cellranger metrics</li>
 </ul>
 </section>
-<section id="single-cell-rna-seq-quality-control-of-cellranger-output" class="level1">
-<h1>Single-cell RNA-seq: Quality control of Cellranger output</h1>
-<section id="cellranger" class="level2">
-<h2 class="anchored" data-anchor-id="cellranger">Cellranger</h2>
+<section id="quality-control-of-cellranger-output" class="level1">
+<h1>Quality control of Cellranger output</h1>
+</section>
+<section id="cellranger" class="level1">
+<h1>Cellranger</h1>
 <p><a href="https://www.10xgenomics.com/support/software/cell-ranger/latest">Cellranger</a> is a tool created by the company 10x to process single-cell sequencing experiments that were processed with their kits.</p>
 <p>The algorithm for the single-cell RNA-seq (scRNA) version of cellranger is described by 10x as follows:</p>
 <p><img src="../img/SC3pGEX-algo-diagram.png" width="350"></p>
@@ -275,8 +285,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="running-cellranger-on-o2" class="level2">
-<h2 class="anchored" data-anchor-id="running-cellranger-on-o2">Running Cellranger on O2</h2>
+<section id="running-cellranger-on-o2" class="level1">
+<h1>Running Cellranger on O2</h1>
 <p>Running cellranger requires a lot of time and computational resources in order to process a single sample. Therefore, having access to a High Performance Computing (HPC) cluster is necessary to run it. Some sequencing cores will automatically process samples with cellranger and provide the outputs to you.</p>
 <p>Note that prior to this step, <strong>you must have a cellranger compatible reference genome generated</strong>. If you are working with mouse or human, 10x has pre-generated the reference which can be downloaded from their <a href="https://www.10xgenomics.com/support/software/cell-ranger/downloads">website</a> for use. If you are using another organism, cellranger has a mode called <a href="https://www.10xgenomics.com/support/software/cell-ranger/latest/tutorials/cr-tutorial-mr">mkref</a> which will generate everything needed for a reference from the files you supply (GTF and fasta).</p>
 <p>Here we are showing an example of how to run <code>cellranger count</code> on Harvard’s O2 HPC using SLURM. To run this script, you will have add additional information, such as:</p>
@@ -287,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>In the following <strong>example script</strong>, you would just have to change the variable specified in the <a href="https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/inputs/cr-inputs-overview">“Inputs for cellranger” section</a> on eth 10x support site. We have already provided some optimal parameters in terms of runtime and memory for running <code>cellranger count</code>.</p>
 <p><strong>You do not need to run this script.</strong></p>
-<div id="fe0a62e3-071a-4ab5-a1bc-1ca9b25d8da2" class="cell" data-execution_count="2">
+<div id="cr_script" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=short               # Partition name</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=0-06:00                  # Runtime in D-HH:MM format</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                       # Number of nodes (keep at 1)</span></span>
@@ -316,21 +326,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>transcriptome<span class="op">=</span>${path_ref} <span class="op">\</span></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>localcores<span class="op">=</span>${local_cores} <span class="op">\</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>localmem<span class="op">=</span>${local_mem}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre>  <span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[2]</span><span class="ansi-green-fg">, line 11</span>
-<span class="ansi-red-fg">    </span><span class="ansi-red-fg">module load gcc</span>
-           ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
-</pre>
 </div>
-</div>
-</div>
-</section>
 <section id="cellranger-outs" class="level2">
 <h2 class="anchored" data-anchor-id="cellranger-outs">Cellranger outs</h2>
 <p>Once cellranger has finished running, there will be a folder titled <code>outs/</code> in a directory named after the <code>project_name</code> variable set above. Generation of all the following files is expected from a succesful completion of the <code>cellranger counts</code> pipeline:</p>
-<div id="31d0c63e-21de-4b44-b362-c01898f6379e" class="cell" data-execution_count="3">
+<div id="tree_cr_output" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>├── cloupe.cloupe</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>├── filtered_feature_bc_matrix</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; ├── barcodes.tsv.gz</span>
@@ -347,19 +347,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; └── matrix.mtx.gz</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>├── raw_feature_bc_matrix.h5</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>└── web_summary.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre>  <span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[3]</span><span class="ansi-green-fg">, line 1</span>
-<span class="ansi-red-fg">    </span><span class="ansi-red-fg">├── cloupe.cloupe</span>
-    ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid character '├' (U+251C)
-</pre>
-</div>
-</div>
 </div>
 </section>
-<section id="web-summary-html-report" class="level2">
-<h2 class="anchored" data-anchor-id="web-summary-html-report">Web summary HTML Report</h2>
+</section>
+<section id="web-summary-html-report" class="level1">
+<h1>Web summary HTML Report</h1>
 <p>The Web Summary HTML file is a great resource for looking at the basic quality of your sample before starting on an analysis. 10x has a <a href="https://www.10xgenomics.com/analysis-guides/quality-assessment-using-the-cell-ranger-web-summary">page describing each metric</a> in depth. There are two pages/tabs included in a scRNA report titled “Summary” and “Gene Expression”.</p>
 <p>We have included these Web Summary files for the control and stimulated samples as links below. You can <strong>download each, and move the HTML to your project <code>data</code> folder</strong>:</p>
 <ul>
@@ -379,8 +371,8 @@ Note
 <p>Some of the values in these reports will be slightly different from current standards, as these samples were generated using the version 1 chemistry kit and optimization have been made since then.</p>
 </div>
 </div>
-<section id="summary" class="level3">
-<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p>At the top of the “Summary” tab, under the “Alerts” header, will be a list of warnings and messages on the quality/important information about the sample. These messages are very informative on what may have gone wrong with the sample or other flags that can be set in the <code>cellranger count</code> run to gain better results.</p>
 <p>Underneath the “Alerts” header, in green text, are the estimated number of high quality cells in the sample, average reads per cells, and median genes per cell. The number of cells will vary depending on how many were loaded in sample preparation, but some general recommendations are provided below:</p>
 <ul>
@@ -389,15 +381,21 @@ Note
 <li><strong>The median genes per cell varies widely</strong> across samples as it depends on sequencing depth and cell type, making it difficult to establish a good minimal value.</li>
 </ul>
 <p>The remaining 4 sections include various metrics that describe the overall quality of the sample. <em>Note that clicking on the grey question mark will show more detailed explanations.</em></p>
-<p><strong>Sequencing</strong></p>
+</section>
+<section id="sequencing" class="level2">
+<h2 class="anchored" data-anchor-id="sequencing">Sequencing</h2>
 <p>Includes information such as the total number of reads and how many of those reads did not meet the length requirements. Additionally, since all barcodes and UMIs are known values (from the kit used to prep scRNA experiments), we can evaluate what percentage of the barcodes and UMIs belong to that whitelist and are valid.</p>
 <p><img src="../img/web_summary_sequencing.png" width="400"></p>
 <p>Ideally, you would like to see &gt;75% for almost all of these values since lower values are indicative of a low quality sequencing run or bad sample quality.</p>
-<p><strong>Mapping</strong></p>
+</section>
+<section id="mapping" class="level2">
+<h2 class="anchored" data-anchor-id="mapping">Mapping</h2>
 <p>Percentage of reads that map to different regions of the reference genome as reported by STAR.</p>
 <p><img src="../img/web_summary_mapping.png" width="400"></p>
 <p>The percent of reads mapped to the genome should be on the higher end, around 85% or higher. Values that are very low could indicate that the reference genome supplied was incorrect or that the sample was problematic. Otherwise, the expectation for a scRNA runs is that the majority of reads will belong to exonic regions. If nuclei were used instead of whole cells, the percentage of reads mapping to intronic regions will be higher (~45%).</p>
-<p><strong>Cells</strong></p>
+</section>
+<section id="cells" class="level2">
+<h2 class="anchored" data-anchor-id="cells">Cells</h2>
 <p>Here we can see what an ideal representation of the Barcode Rank Plot looks like. The cells are sorted by the number of UMIs found in the cell to differentiate empty droplets/low quality cells (background) from actual cells.</p>
 <p><img src="../img/barcode_rank_plot.png" width="400"></p>
 <p><em>Image credit: <a href="https://cdn.10xgenomics.com/image/upload/v1660261286/support-documents/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf">10x</a></em></p>
@@ -409,52 +407,59 @@ Note
 <li><strong>Compromised</strong>: Defined cliff and knee, but with few barcodes detected could be due to inaccurate cell count or clogging.</li>
 </ul>
 <p>This section additionally describes averages and medians for number of genes and reads in the sample.</p>
-<p><strong>Sample</strong></p>
+</section>
+<section id="sample" class="level2">
+<h2 class="anchored" data-anchor-id="sample">Sample</h2>
 <p>The sample section contains important metadata used by cellranger, such as what the Sample ID and the path used for the reference. The chemistry version (which 10x kit was used) and intron flags are also stored here. This information is useful for reproducibility reasons, as the version of cellranger used is also kept.</p>
 <p><img src="../img/web_summary_sample.png" width="400"></p>
 </section>
-<section id="gene-expression" class="level3">
-<h3 class="anchored" data-anchor-id="gene-expression">Gene Expression</h3>
+<section id="gene-expression" class="level2">
+<h2 class="anchored" data-anchor-id="gene-expression">Gene Expression</h2>
 <p>The “Gene Expression” table contains information downstream of the basic QC, such as:</p>
-<p><strong>t-SNE Projection</strong></p>
+<section id="t-sne-projection" class="level3">
+<h3 class="anchored" data-anchor-id="t-sne-projection">t-SNE Projection</h3>
 <p>Dotplot showing the t-SNE projection of filtered cells colored by UMI counts and clusters. The report allows you select various values of K for the K-means clustering, showing different groupings that can be generated from the data.</p>
 <p><img src="../img/web_summary_tsne.png" width="800"></p>
 <p>Later in the workshop we will spend more time on the intricacies of clustering. The requirements for this QC report would be to see clear separation of cells into groups with defined clusters - representing different cell types.</p>
-<p><strong>Top Features by Cluster</strong></p>
+</section>
+<section id="top-features-by-cluster" class="level3">
+<h3 class="anchored" data-anchor-id="top-features-by-cluster">Top Features by Cluster</h3>
 <p>This table shows the log2 fold-change and p-value for each gene and cluster after a differential expression analysis is run.</p>
 <p><img src="../img/web_summary_degs.png" width="800"></p>
 <p>These top genes per cluster can give a brief peek into the cell type distribution of the sample. If no expected cell type marker genes appear or mitochondrial/ribosomal genes show up frequently, this can be indicative of something wrong with the sample.</p>
-<p><strong>Sequencing Saturation and Median Genes per Cell</strong></p>
+</section>
+<section id="sequencing-saturation-and-median-genes-per-cell" class="level3">
+<h3 class="anchored" data-anchor-id="sequencing-saturation-and-median-genes-per-cell">Sequencing Saturation and Median Genes per Cell</h3>
 <p>The sequencing saturation plot is a measure of library complexity. In scRNA, more genes can be detected with higher sequencing depth. At a point, you reach sequencing saturation where you do not gain any more meaningful insights which is what the dotted line represents here.</p>
 <p>Similar to the sequencing saturation plot, looking at the median gene per cells against mean reads per cell will indicate if your have over or under-sequenced. The slope near the endpoint can be used to determine how much benefit would be gained from sequencing more deeply.</p>
 <p><img src="../img/web_summary_seq_saturation.png" width="1200"></p>
 </section>
 </section>
-<section id="metrics-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="metrics-evaluation">Metrics evaluation</h2>
-<p>Many of the core pieces of information from the web summary are stored in the <code>metrics_summary.csv</code>. As this is a csv file, we can read it into R and generate plots to include in reports on the general quality of the samples.</p>
+</section>
+<section id="metrics-evaluation" class="level1">
+<h1>Metrics evaluation</h1>
+<p>Many of the core pieces of information from the web summary are stored in the <code>metrics_summary.csv</code>. As this is a csv file, we can read it into python and generate plots to include in reports on the general quality of the samples.</p>
 <p>We have included these csv files for the control and stimulated samples as links below. You can right-click on the link and “Save as…” into your <strong>project <code>data</code> folder</strong>:</p>
 <ul>
 <li><a href="https://www.dropbox.com/scl/fi/qnz44ng51ojmhu44acc8g/ctrl_metrics_summary.csv?rlkey=8zx5g1mtn6mrlwpv0syoz3bv4&amp;st=9d0okyhf&amp;dl=1">Control sample</a> <code>metrics.csv</code> file</li>
 <li><a href="https://www.dropbox.com/scl/fi/gaa4sabcbhwqpuogfh0us/stim_metrics_summary.csv?rlkey=h2uokc9r2edeinxtzgrpw3ds4&amp;dl=1">Stimulated sample</a> <code>metrics.csv</code> file</li>
 </ul>
 <p>First, to read the files in:</p>
-<div id="4bd78401-b838-4770-9104-fca60640397e" class="cell" data-execution_count="7">
+<div id="cell-load_cr_data" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="fb6a0f74-401d-4d11-9196-cd4c1819ab45" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sample_names <span class="op">=</span> [<span class="st">"ctrl"</span>, <span class="st">"stim"</span>]</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> <span class="st">"stim"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> pd.read_csv(<span class="ss">f"../data/</span><span class="sc">{</span>sample<span class="sc">}</span><span class="ss">_metrics_summary.csv"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> metrics.transpose()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>metrics[<span class="dv">0</span>] <span class="op">=</span> metrics[<span class="dv">0</span>].<span class="bu">str</span>.replace(<span class="st">"%"</span>, <span class="st">""</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>metrics[<span class="dv">0</span>] <span class="op">=</span> metrics[<span class="dv">0</span>].<span class="bu">str</span>.replace(<span class="st">","</span>, <span class="st">""</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>metrics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sample_names <span class="op">=</span> [<span class="st">"ctrl"</span>, <span class="st">"stim"</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> <span class="st">"stim"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> pd.read_csv(<span class="ss">f"../data/</span><span class="sc">{</span>sample<span class="sc">}</span><span class="ss">_metrics_summary.csv"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> metrics.transpose()</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>metrics[<span class="dv">0</span>] <span class="op">=</span> metrics[<span class="dv">0</span>].<span class="bu">str</span>.replace(<span class="st">"%"</span>, <span class="st">""</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>metrics[<span class="dv">0</span>] <span class="op">=</span> metrics[<span class="dv">0</span>].<span class="bu">str</span>.replace(<span class="st">","</span>, <span class="st">""</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>metrics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="load_cr_data" class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
 
@@ -548,9 +553,11 @@ Note
 </div>
 </div>
 </div>
+<p>TODO generate plots</p>
 
 
-</section>
+<!-- -->
+
 </section>
 
 </main> <!-- /main -->
@@ -1003,7 +1010,264 @@ Note
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Quality Control of Cellranger Output"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Noor Sohail, Meeta Mistry"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> Thursday, June 25th 2024</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>Approximate time: 30 minutes</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning Objectives:</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Describe how cellranger is run and what the ouputs are</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Review the cellranger generated QC report (web summary HTML)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Create plots with cellranger metrics</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu"># Quality control of Cellranger output</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu"># Cellranger</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Cellranger</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/latest)</span> is a tool created by the company 10x to process single-cell sequencing experiments that were processed with their kits.</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>The algorithm for the single-cell RNA-seq (scRNA) version of cellranger is described by 10x as follows:</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/SC3pGEX-algo-diagram.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"350"</span><span class="dt">&gt;</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>*Image credit: [10x](https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm)*</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>The main elements of this pipeline are as follows:</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Align FASTQ reads against a reference genome</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Filter low quailty reads and correct cell barcodes/UMIs</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Collapse on PCR duplicates using UMIs</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Generate raw counts matrix</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Identify low quality cells to generate a filtered counts matrix</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>While the focus of this workshop is scRNA, we also want to point out that there are other cellranger softwares and modes for different types of single-cell experiments.</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Experiment   <span class="pp">|</span> Experiment description <span class="pp">|</span> 10x tool <span class="pp">|</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="pp">| :-----------</span> <span class="pp">| :--------------------:</span> <span class="pp">| -------:</span> <span class="pp">|</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> RNA     <span class="pp">|</span>   RNA    <span class="pp">|</span> <span class="co">[</span><span class="ot">cellranger count</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-gex-count)</span> <span class="pp">|</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ATAC     <span class="pp">|</span>   ATAC    <span class="pp">|</span> <span class="co">[</span><span class="ot">cellranger-atac count</span><span class="co">](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/using/count)</span> <span class="pp">|</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Multiome     <span class="pp">|</span>   RNA + ATAC   <span class="pp">|</span> <span class="co">[</span><span class="ot">cellranger-arc count</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger-arc/latest/analysis/single-library-analysis)</span> <span class="pp">|</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> V(D)J        <span class="pp">|</span>   Clonotyping of T and B cells   <span class="pp">|</span> <span class="co">[</span><span class="ot">cellranger vdj</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-5p-vdj)</span> <span class="pp">|</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Hashtagging        <span class="pp">|</span>  Antibody/oligo tags to differentiate cells after pooling   <span class="pp">|</span> <span class="co">[</span><span class="ot">cellranger multi</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/)</span> <span class="pp">|</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="fu"># Running Cellranger on O2</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>Running cellranger requires a lot of time and computational resources in order to process a single sample. Therefore, having access to a High Performance Computing (HPC) cluster is necessary to run it. Some sequencing cores will automatically process samples with cellranger and provide the outputs to you. </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>Note that prior to this step, **you must have a cellranger compatible reference genome generated**. If you are working with mouse or human, 10x has pre-generated the reference which can be downloaded from their <span class="co">[</span><span class="ot">website</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/downloads)</span> for use. If you are using another organism, cellranger has a mode called <span class="co">[</span><span class="ot">mkref</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/latest/tutorials/cr-tutorial-mr)</span> which will generate everything needed for a reference from the files you supply (GTF and fasta).</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>Here we are showing an example of how to run <span class="in">`cellranger count`</span> on Harvard's O2 HPC using SLURM. To run this script, you will have add additional information, such as:</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The name of the project (the results will be placed in a folder of the same name)</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Path to the FASTQ files from your experiment</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Path to the reference genome </span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>In the following **example script**, you would just have to change the variable specified in the <span class="co">[</span><span class="ot">"Inputs for cellranger" section</span><span class="co">](https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/inputs/cr-inputs-overview)</span> on eth 10x support site. We have already provided some optimal parameters in terms of runtime and memory for running <span class="in">`cellranger count`</span>.</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>**You do not need to run this script.**</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cr_script</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=short               # Partition name</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=0-06:00                  # Runtime in D-HH:MM format</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                       # Number of nodes (keep at 1)</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1                      # Number of tasks per node (keep at 1)</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=16              # CPU cores requested per task (change for threaded jobs)</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=64G                       # Memory needed per node (total)</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=jobid_%j.err            # File to which STDERR will be written, including job ID</span></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=jobid_%j.out           # File to which STDOUT will be written, including job ID</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL                 # Type of email notification (</span><span class="re">BEGIN</span><span class="co">, </span><span class="re">END</span><span class="co">, FAIL, ALL)</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>module load gcc</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>module load cellranger<span class="op">/</span><span class="fl">7.1.0</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>local_cores<span class="op">=</span><span class="dv">16</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>local_mem<span class="op">=</span><span class="dv">64</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Inputs for cellranger</span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>project_name<span class="op">=</span><span class="st">""</span>                         <span class="co"># Name of output</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>path_fastq<span class="op">=</span><span class="st">"/path/to/fastq/"</span>             <span class="co"># Path to folder with FASTQ files for one sample</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>path_ref<span class="op">=</span><span class="st">"/path/to/reference/"</span>           <span class="co"># Path to cellranger compatible reference</span></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>cellranger count <span class="op">\</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span><span class="bu">id</span><span class="op">=</span>${project_name} <span class="op">\</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>fastqs<span class="op">=</span>${path_fastq} <span class="op">\</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>transcriptome<span class="op">=</span>${path_ref} <span class="op">\</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>localcores<span class="op">=</span>${local_cores} <span class="op">\</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>    <span class="op">--</span>localmem<span class="op">=</span>${local_mem}</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cellranger outs</span></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>Once cellranger has finished running, there will be a folder titled <span class="in">`outs/`</span> in a directory named after the <span class="in">`project_name`</span> variable set above. Generation of all the following files is expected from a succesful completion of the <span class="in">`cellranger counts`</span> pipeline:</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tree_cr_output</span></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>├── cloupe.cloupe</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>├── filtered_feature_bc_matrix</span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; ├── barcodes.tsv.gz</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; ├── features.tsv.gz</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; └── matrix.mtx.gz</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>├── filtered_feature_bc_matrix.h5</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>├── metrics_summary.csv</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>├── molecule_info.h5</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>├── possorted_genome_bam.bam</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>├── possorted_genome_bam.bam.bai</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>├── raw_feature_bc_matrix</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; ├── barcodes.tsv.gz</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; ├── features.tsv.gz</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>│&nbsp;&nbsp; └── matrix.mtx.gz</span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>├── raw_feature_bc_matrix.h5</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>└── web_summary.html</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="fu"># Web summary HTML Report</span></span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>The Web Summary HTML file is a great resource for looking at the basic quality of your sample before starting on an analysis. 10x has a <span class="co">[</span><span class="ot">page describing each metric</span><span class="co">](https://www.10xgenomics.com/analysis-guides/quality-assessment-using-the-cell-ranger-web-summary)</span> in depth. There are two pages/tabs included in a scRNA report titled "Summary" and "Gene Expression". </span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>We have included these Web Summary files for the control and stimulated samples as links below. You can **download each, and move the HTML to your project `data` folder**:</span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="co">[</span><span class="ot">Control sample</span><span class="co">](https://www.dropbox.com/scl/fi/skjyyvs9078pbef7s4qvb/ctrl_web_summary.html?rlkey=335gw4qmy29uny5813wg0zakr&amp;dl=1)</span> report</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="co">[</span><span class="ot">Stimulated sample</span><span class="co">](https://www.dropbox.com/scl/fi/r6n83y57cd7vhc130zm1g/stim_web_summary.html?rlkey=50ur193yfsy5ex9urkmr87h3c&amp;dl=1)</span> report</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>Some of the values in these reports will be slightly different from current standards, as these samples were generated using the version 1 chemistry kit and optimization have been made since then.</span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>At the top of the "Summary" tab, under the "Alerts" header, will be a list of warnings and messages on the quality/important information about the sample. These messages are very informative on what may have gone wrong with the sample or other flags that can be set in the <span class="in">`cellranger count`</span> run to gain better results.</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>Underneath the "Alerts" header, in green text, are the estimated number of high quality cells in the sample, average reads per cells, and median genes per cell. The number of cells will vary depending on how many were loaded in sample preparation, but some general recommendations are provided below:</span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>500 cells is the **lower limit** for a good quality sample.</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>10x also recommends a minimum of 20,000 reads per cell on average.</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**The median genes per cell varies widely** across samples as it depends on sequencing depth and cell type, making it difficult to establish a good minimal value. </span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>The remaining 4 sections include various metrics that describe the overall quality of the sample. _Note that clicking on the grey question mark will show more detailed explanations._</span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sequencing</span></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>Includes information such as the total number of reads and how many of those reads did not meet the length requirements. Additionally, since all barcodes and UMIs are known values (from the kit used to prep scRNA experiments), we can evaluate what percentage of the barcodes and UMIs belong to that whitelist and are valid. </span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/web_summary_sequencing.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;</span></span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>Ideally, you would like to see &gt;75% for almost all of these values since lower values are indicative of a low quality sequencing run or bad sample quality.</span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mapping</span></span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>Percentage of reads that map to different regions of the reference genome as reported by STAR.</span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/web_summary_mapping.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;</span></span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>The percent of reads mapped to the genome should be on the higher end, around 85% or higher. Values that are very low could indicate that the reference genome supplied was incorrect or that the sample was problematic. Otherwise, the expectation for a scRNA runs is that the majority of reads will belong to exonic regions. If nuclei were used instead of whole cells, the percentage of reads mapping to intronic regions will be higher (~45%).</span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cells</span></span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a>Here we can see what an ideal representation of the Barcode Rank Plot looks like. The cells are sorted by the number of UMIs found in the cell to differentiate empty droplets/low quality cells (background) from actual cells. </span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/barcode_rank_plot.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;</span></span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a>*Image credit: [10x](https://cdn.10xgenomics.com/image/upload/v1660261286/support-documents/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf)*</span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a>The shape of these plots can indicate a few different things about the sample:</span>
+<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Typical**: Clear cliff and knee with separation between cells and background.</span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Heterogeneous**: Bimodal plot with 2 cliffs and knees, with a clear divide between cells and background.</span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Compromised**: Round curve with a steep drop-off at the end whih indicated low quality due to many factors.</span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Compromised**: Defined cliff and knee, but with few barcodes detected could be due to inaccurate cell count or clogging.</span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>This section additionally describes averages and medians for number of genes and reads in the sample.</span>
+<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sample</span></span>
+<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>The sample section contains important metadata used by cellranger, such as what the Sample ID and the path used for the reference. The chemistry version (which 10x kit was used) and intron flags are also stored here. This information is useful for reproducibility reasons, as the version of cellranger used is also kept.</span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/web_summary_sample.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;</span></span>
+<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gene Expression</span></span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>The "Gene Expression" table contains information downstream of the basic QC, such as:</span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a><span class="fu">### t-SNE Projection</span></span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a>Dotplot showing the t-SNE projection of filtered cells colored by UMI counts and clusters. The report allows you select various values of K for the K-means clustering, showing different groupings that can be generated from the data.</span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/web_summary_tsne.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"800"</span><span class="dt">&gt;</span></span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>Later in the workshop we will spend more time on the intricacies of clustering. The requirements for this QC report would be to see clear separation of cells into groups with defined clusters - representing different cell types.</span>
+<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a><span class="fu">### Top Features by Cluster</span></span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>This table shows the log2 fold-change and p-value for each gene and cluster after a differential expression analysis is run.</span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/web_summary_degs.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"800"</span><span class="dt">&gt;</span></span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>These top genes per cluster can give a brief peek into the cell type distribution of the sample. If no expected cell type marker genes appear or mitochondrial/ribosomal genes show up frequently, this can be indicative of something wrong with the sample.</span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sequencing Saturation and Median Genes per Cell</span></span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>The sequencing saturation plot is a measure of library complexity. In scRNA, more genes can be detected with higher sequencing depth. At a point, you reach sequencing saturation where you do not gain any more meaningful insights which is what the dotted line represents here.</span>
+<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>Similar to the sequencing saturation plot, looking at the median gene per cells against mean reads per cell will indicate if your have over or under-sequenced. The slope near the endpoint can be used to determine how much benefit would be gained from sequencing more deeply.</span>
+<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../img/web_summary_seq_saturation.png"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"1200"</span><span class="dt">&gt;</span></span>
+<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a><span class="fu"># Metrics evaluation</span></span>
+<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>Many of the core pieces of information from the web summary are stored in the <span class="in">`metrics_summary.csv`</span>. As this is a csv file, we can read it into python and generate plots to include in reports on the general quality of the samples.</span>
+<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>We have included these csv files for the control and stimulated samples as links below. You can right-click on the link and "Save as..." into your **project `data` folder**:</span>
+<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="co">[</span><span class="ot">Control sample</span><span class="co">](https://www.dropbox.com/scl/fi/qnz44ng51ojmhu44acc8g/ctrl_metrics_summary.csv?rlkey=8zx5g1mtn6mrlwpv0syoz3bv4&amp;st=9d0okyhf&amp;dl=1)</span> <span class="in">`metrics.csv`</span> file</span>
+<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="co">[</span><span class="ot">Stimulated sample</span><span class="co">](https://www.dropbox.com/scl/fi/gaa4sabcbhwqpuogfh0us/stim_metrics_summary.csv?rlkey=h2uokc9r2edeinxtzgrpw3ds4&amp;dl=1)</span> <span class="in">`metrics.csv`</span> file</span>
+<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a>First, to read the files in:</span>
+<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load_cr_data</span></span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>sample_names <span class="op">=</span> [<span class="st">"ctrl"</span>, <span class="st">"stim"</span>]</span>
+<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> <span class="st">"stim"</span></span>
+<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> pd.read_csv(<span class="ss">f"../data/</span><span class="sc">{</span>sample<span class="sc">}</span><span class="ss">_metrics_summary.csv"</span>)</span>
+<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> metrics.transpose()</span>
+<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>metrics[<span class="dv">0</span>] <span class="op">=</span> metrics[<span class="dv">0</span>].<span class="bu">str</span>.replace(<span class="st">"%"</span>, <span class="st">""</span>)</span>
+<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>metrics[<span class="dv">0</span>] <span class="op">=</span> metrics[<span class="dv">0</span>].<span class="bu">str</span>.replace(<span class="st">","</span>, <span class="st">""</span>)</span>
+<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>metrics</span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>TODO generate plots</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

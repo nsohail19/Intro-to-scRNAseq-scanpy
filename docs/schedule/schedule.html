@@ -219,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td style="text-align: center;">11:00 - 11:45</td>
-<td style="text-align: center;"><a href="../lessons/03_SC_quality_control-setup.html">Quality control set-up</a></td>
+<td style="text-align: center;"><a href="../lessons/03_setup.html">Quality control set-up</a></td>
 <td style="text-align: center;">Noor</td>
 </tr>
 <tr class="even">
@@ -240,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </summary>
 <br>Before you start any analysis, it’s important to know whether or not you have good quality cells. At these early stages you can flag or remove samples that could produce erroneous results downstream. <br><br>In this lesson you will:<br> - Discuss the outputs of cellranger and how to run it <br> - Review web summary HTML report<br> - Create plots from metrics_summary.csv file <br><br>
 </details></li>
-<li><a href="../lessons/04_SC_quality_control.ipynb">Quality control with additional metrics</a>
+<li><a href="../lessons/05_scRNA_QC.html">Quality control with additional metrics</a>
 <details>
 <summary>
 <i>Click here for a preview of this lesson</i>
@@ -289,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: center;">10:15 - 11:15</td>
-<td style="text-align: center;"><a href="../lessons/07_SCT_normalization.html">Normalization and regressing out unwanted variation</a></td>
+<td style="text-align: center;"><a href="../lessons/07_normalization.html">Normalization and regressing out unwanted variation</a></td>
 <td style="text-align: center;">Noor</td>
 </tr>
 <tr class="odd">
@@ -299,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: center;">11:25 - 12:00</td>
-<td style="text-align: center;"><a href="../lessons/08_integration_cca_theory.html">A brief introduction to Integration</a></td>
+<td style="text-align: center;"><a href="../lessons/08_integration_scvi.html">A brief introduction to Integration</a></td>
 <td style="text-align: center;">Will</td>
 </tr>
 </tbody>
@@ -308,21 +308,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="before-the-next-class-1">Before the next class:</h3>
 <p>I. Please <strong>study the contents</strong> and <strong>work through all the code</strong> within the following lessons:</p>
 <ol type="1">
-<li><a href="../lessons/09_integration_code_harmony.ipynb">Running CCA integration and complex integration tasks</a>
+<li><a href="../lessons/09_integration_code_harmony.qmd">Running CCA integration and complex integration tasks</a>
 <details>
 <summary>
 <i>Click here for a preview of this lesson</i>
 </summary>
 <br>In class, we described the theory of integration and in what situations we would implement it. <br><br>In this lesson you will:<br> - Run the code to implement CCA integration <br> - Evaluate the effect of integration on the UMAP <br> - Learn about methods for complex integration tasks (Harmonizing samples) <br>
 </details></li>
-<li><a href="../lessons/10_clustering_cells_SCT.html">Clustering</a>
+<li><a href="../lessons/10_clustering.html">Clustering</a>
 <details>
 <summary>
 <i>Click here for a preview of this lesson</i>
 </summary>
 <br>From the UMAP visualization of our data we can see that the cells are positioned into groups. Our next task is to isolate clusters of cells that are most similar to one another based on gene expression. <br><br>In this lesson you will:<br> - Learn the theory behind clustering and how it is performed in Seurat<br> - Cluster cells and visualize them on the UMAP<br>
 </details></li>
-<li><a href="../lessons/11_clustering_quality_control.ipynb">Clustering quality control</a>
+<li><a href="../lessons/11_clustering_quality_control.html">Clustering quality control</a>
 <details>
 <summary>
 <i>Click here for a preview of this lesson</i>
@@ -813,14 +813,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 09:45 - 10:35<span class="pp">|</span> <span class="co">[</span><span class="ot">Introduction to Single Cell RNA-sequencing: a practical guide</span><span class="co">](../slides/072624_Chan_scRNAseq_workshop_Arpita_Kulkarni.pdf)</span> <span class="pp">|</span> <span class="co">[</span><span class="ot">Dr. Arpita Kulkarni</span><span class="co">](https://singlecellcore.hms.harvard.edu/people/arpita-kulkarni-phd)</span> <span class="pp">|</span></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 10:35 - 10:40 <span class="pp">|</span> Break <span class="pp">|</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 10:40 - 11:00 <span class="pp">|</span> scRNA-seq pre-reading discussion <span class="pp">|</span> All <span class="pp">|</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:00 - 11:45 <span class="pp">|</span> <span class="co">[</span><span class="ot">Quality control set-up</span><span class="co">](../lessons/03_SC_quality_control-setup.ipynb)</span> <span class="pp">|</span> Noor <span class="pp">|</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:00 - 11:45 <span class="pp">|</span> <span class="co">[</span><span class="ot">Quality control set-up</span><span class="co">](../lessons/03_setup.qmd)</span> <span class="pp">|</span> Noor <span class="pp">|</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:45 - 12:00 <span class="pp">|</span> Overview of self-learning materials and homework submission <span class="pp">|</span> Will <span class="pp">|</span></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### Before the next class:</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>I. Please **study the contents** and **work through all the code** within the following lessons:</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">   1. </span><span class="co">[</span><span class="ot">Quality control of cellranger counts</span><span class="co">](../lessons/04_cellranger_QC.ipynb)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">   1. </span><span class="co">[</span><span class="ot">Quality control of cellranger counts</span><span class="co">](../lessons/04_cellranger_QC.qmd)</span></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>Before you start any analysis, it’s important to know whether or not you have good quality cells. At these early stages you can flag or remove samples that could produce erroneous results downstream. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
@@ -829,7 +829,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Create plots from metrics_summary.csv file <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss"> 2.  </span><span class="co">[</span><span class="ot">Quality control with additional metrics</span><span class="co">](../lessons/04_SC_quality_control.ipynb)</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss"> 2.  </span><span class="co">[</span><span class="ot">Quality control with additional metrics</span><span class="co">](../lessons/05_scRNA_QC.qmd)</span></span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>         <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In addition to the QC generated by cellranger, we can also compute some of our own metrics based on the raw data we have loaded into our Seurat object. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
@@ -861,14 +861,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Time <span class="pp">|</span>  Topic  <span class="pp">|</span> Instructor <span class="pp">|</span></span>
 <span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|:-----------:|:----------:|:--------:|</span></span>
 <span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 09:30 - 10:15 <span class="pp">|</span> Self-learning lessons discussion <span class="pp">|</span> All <span class="pp">|</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 10:15 - 11:15<span class="pp">|</span>  <span class="co">[</span><span class="ot">Normalization and regressing out unwanted variation</span><span class="co">](../lessons/07_SCT_normalization.ipynb)</span> <span class="pp">|</span> Noor <span class="pp">|</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 10:15 - 11:15<span class="pp">|</span>  <span class="co">[</span><span class="ot">Normalization and regressing out unwanted variation</span><span class="co">](../lessons/07_normalization.qmd)</span> <span class="pp">|</span> Noor <span class="pp">|</span></span>
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:15 - 11:25 <span class="pp">|</span> Break <span class="pp">|</span></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:25 - 12:00<span class="pp">|</span> <span class="co">[</span><span class="ot">A brief introduction to Integration</span><span class="co">](../lessons/08_integration_cca_theory.ipynb)</span> <span class="pp">|</span> Will <span class="pp">|</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 11:25 - 12:00<span class="pp">|</span> <span class="co">[</span><span class="ot">A brief introduction to Integration</span><span class="co">](../lessons/08_integration_scvi.qmd)</span> <span class="pp">|</span> Will <span class="pp">|</span></span>
 <span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### Before the next class:</span></span>
 <span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>I. Please **study the contents** and **work through all the code** within the following lessons:</span>
 <span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="co">[</span><span class="ot">Running CCA integration and complex integration tasks</span><span class="co">](../lessons/09_integration_code_harmony.ipynb)</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="co">[</span><span class="ot">Running CCA integration and complex integration tasks</span><span class="co">](../lessons/09_integration_code_harmony.qmd)</span></span>
 <span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In class, we described the theory of integration and in what situations we would implement it. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
@@ -877,7 +877,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Learn about methods for complex integration tasks (Harmonizing samples) <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="co">[</span><span class="ot">Clustering</span><span class="co">](../lessons/10_clustering_cells_SCT.ipynb)</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="co">[</span><span class="ot">Clustering</span><span class="co">](../lessons/10_clustering.qmd)</span></span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
 <span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>         <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>From the UMAP visualization of our data  we can see that the cells are positioned into groups. Our next task is to isolate clusters of cells that are most similar to one another based on gene expression. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>In this lesson you will:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
@@ -885,7 +885,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="ss">             - </span>Cluster cells and visualize them on the UMAP<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="co">[</span><span class="ot">Clustering quality control</span><span class="co">](../lessons/11_clustering_quality_control.ipynb)</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="co">[</span><span class="ot">Clustering quality control</span><span class="co">](../lessons/11_clustering_quality_control.qmd)</span></span>
 <span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">details</span><span class="dt">&gt;</span></span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">summary</span><span class="dt">&gt;&lt;</span><span class="kw">i</span><span class="dt">&gt;</span>Click here for a preview of this lesson<span class="dt">&lt;/</span><span class="kw">i</span><span class="dt">&gt;&lt;/</span><span class="kw">summary</span><span class="dt">&gt;</span></span>
 <span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>         <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>After separating cells into clusters, it is crtical to evaluate whether they are biologically meaningful or not. At this point we can also decide if we need to re-cluster and/or potentialy go back to a previous QC step.</span>

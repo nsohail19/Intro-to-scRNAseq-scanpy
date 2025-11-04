@@ -1,0 +1,73 @@
+---
+title: "Normalization and exploring data for unwanted variation - Answer Key"
+author: "Will Gammerdinger"
+date: "Tuesday, July 1, 2025"
+---
+
+```{python}
+#| label: load_libraries
+#| echo: false
+# Single-cell RNA-seq - normalization
+
+import scanpy as sc
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+adata_filt = sc.read_h5ad("../results/07_normalized.h5ad")
+```
+
+# Exercise 1
+
+Mitochondrial expression is another factor which can greatly influence clustering. Oftentimes, it is useful to regress out variation due to mitochondrial expression. However, if the differences in mitochondrial gene expression represent a biological phenomenon that may help to distinguish cell clusters, then we advise not regressing this out. In this exercise, we can perform a quick check similar to looking at cell cycle and decide whether or not we want to regress it out.
+
+First, turn the mitochondrial ratio variable into a new categorical variable based on quartiles (using the code below):
+
+```{python}
+#| label: mito_ratio_wrangling
+# Check quartile values
+np.percentile(adata_filt.obs["pct_counts_mito"], [0, 25, 50, 75, 100])
+
+# Turn mitoRatio into categorical factor vector based on quartile values
+adata_filt.obs['mitoFr'] = pd.cut(
+    adata_filt.obs['pct_counts_mito'],
+    bins=[-np.inf, 1.44, 1.99, 2.67, np.inf],
+    labels=["Low", "Medium", "Medium high", "High"])
+```
+
+1. Next, plot the PCA similar to how we did with cell cycle regression. *Hint: use the new `mitoFr`variable to split cells and color them accordingly.*
+
+```{python}
+#| label: plot_pca
+# Plot the PCA colored by mitoFr
+# Create plot with the correct dimensions
+fig, axes = plt.subplots(2, 2, figsize=(9, 6))
+
+# Plot each Mitochonrdrial ratio
+sc.pl.pca(adata_filt, color=["mitoFr"], groups=["Low"], ax=axes[0, 0], 
+          show=False, title="Low")
+sc.pl.pca(adata_filt, color=["mitoFr"], groups=["Medium"], ax=axes[0, 1], 
+          show=False, title="Medium")
+sc.pl.pca(adata_filt, color=["mitoFr"], groups=["Medium high"], ax=axes[1, 0], 
+          show=False, title="Medium high")
+sc.pl.pca(adata_filt, color=["mitoFr"], groups=["High"], ax=axes[1, 1], 
+          show=False, title="High")
+
+plt.tight_layout()
+plt.show()
+```
+
+2. Evaluate the PCA plot generated above
+	
+	* Determine whether or not you observe an effect.
+	
+	Yes, there is an effect. 
+	
+	* Describe what you see. 
+	
+	Based on this plot, we can see that there is a different pattern of scatter for the plot containing cells with "High" mitochondrial expression. We observe that the lobe of cells on the left-hand side of the plot is where most of the cells with high mitochondrial expression are. For all other levels of mitochondrial expression we see a more even distribution of cells across the PCA plot.
+	
+	* Would you regress out mitochondrial fraction as a source of unwanted variation?
+	
+	Since we see this clear difference, we will regress out the 'mitoRatio' when we identify the most variant genes.

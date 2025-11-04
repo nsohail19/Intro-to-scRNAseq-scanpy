@@ -1,0 +1,55 @@
+---
+sidebar: false
+toc: false
+execute: 
+  eval: false
+---
+
+# Introduction to single-cell RNA-seq
+
+# Description
+
+This repository has teaching materials for a hands-on **Introduction to single-cell RNA-seq** workshop. This workshop will instruct participants on how to design a single-cell RNA-seq experiment, and how to efficiently manage and analyze the data starting from count matrices. This will be a hands-on workshop in which we will focus on using the Scanpy package using Python/Jupyter Lab.
+
+::: callout-note
+These materials were developed for a trainer-led workshop, but are amenable to self-guided learning.
+:::
+
+# Learning Objectives
+
+- Describe best practices for designing a single-cell RNA-seq experiment
+- Describe steps in a single-cell RNA-seq analysis workflow
+- Use Scanpy and associated tools to perform analysis of single-cell expression data, including data filtering, QC, integration, clustering, and marker identification
+- Understand practical considerations for performing scRNA-seq, rather than in-depth exploration of algorithm theory
+
+# Installation requirements
+
+## Applications
+
+Anaconda
+
+## Packages
+
+```{python}
+#| label: conda_env
+#| eval: false
+conda create -n scrna_py python==3.12
+conda activate scrna_py
+conda install jupyter pandas matplotlib 
+conda install -c conda-forge scanpy python-igraph leidenalg 
+pip install scikit-misc
+conda install scvi-tools -c conda-forge
+```
+
+---
+
+### Citation
+
+To cite material from this course in your publications, please use:
+
+::: callout-important
+# Citation
+Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, & Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. https://doi.org/10.5281/zenodo.5826256. 
+:::
+
+A lot of time and effort went into the preparation of these materials. Citations help us understand the needs of the community, gain recognition for our work, and attract further funding to support our teaching activities. Thank you for citing this material if it helped you in your data analysis.

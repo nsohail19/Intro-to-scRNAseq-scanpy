@@ -1,0 +1,143 @@
+---
+title: "Integration"
+author: "Mary Piper, Meeta Mistry, Radhika Khetani, Jihe Liu, Amelie Jule"
+date: Monday, Novemeber 21st, 2020
+---
+
+# Learning Objectives
+
+* Describe the theory of integration with CCA
+
+# Single-cell RNA-seq clustering analysis: Integration theory
+
+<p align="center">
+<img src="../img/sc_workflow_2022.jpg" width="630">
+</p>
+
+***
+
+_**Goals:**_ 
+
+ - _To **align same cell types** across conditions._
+
+_**Challenges:**_
+ 
+ - _**Aligning cells of similar cell types** so that we do not have clustering downstream due to differences between samples, conditions, modalities, or batches_
+
+_**Recommendations:**_
+ 
+ - _Go through the analysis without integration first to determine whether integration is necessary_
+
+***
+
+```{python}
+#| label: load_libraries
+# Single-cell RNA-seq - integration
+
+import scanpy as sc
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import scvi
+
+adata_filt = sc.read_h5ad("../results/07_normalized.h5ad")
+```
+
+## To integrate or not to integrate?
+
+Generally, we always look at our clustering **without integration** before deciding whether we need to perform any alignment. It can be helpful to first run through clustering with samples from different sample classes together to see whether there are condition-specific clusters for cell types present in both conditions. Oftentimes, when clustering cells from multiple conditions there are condition-specific clusters and integration can help ensure the same cell types cluster together.
+
+ **Do not just always perform integration because you think there might be differences - explore the data.** If we had performed the normalization on both conditions together in a Seurat object and visualized the similarity between cells, we would have seen in our dataset there is condition-specific clustering:
+
+## Example scenarios for integration
+
+- Different **conditions** (e.g. control and stimulated)
+	<img src="../img/seurat_condition_integ.png" width="800">
+
+- Different **datasets** (e.g. scRNA-seq from datasets generated using different library preparation methods on the same samples)
+	<img src="../img/seurat_dataset_integ.png" width="800">
+
+- Different **batches** (e.g. when experimental conditions make batch processing of samples necessary)
+
+## Should we integration on our data?
+One way to determine if integration is a necessary step is to calculate the UMAP coordinates for the dataset. We will discuss the underlying calculations that are done for each one of these steps in the next lesson.
+
+```{python}
+#| label: calc_umap
+# Calculate neighbors
+sc.pp.neighbors(adata_filt)
+
+# Calculate UMAP
+sc.tl.umap(adata_filt)
+```
+
+The best way to assess whether or not there is a clear batch effect is to take a known marker gene and compare it against the batch variable we are concerned with. In this particular case, `sample` is our confounding variable and we can use the T-cell marker `CD3D`. If we see a clear split based upon sample amongst our T cell populations, that is the justification we can use for integration as we are seeing techinical differences that are causing the T-cells to be considered different from one another.
+
+```{python}
+#| label: umap_sample_cd3d
+sc.pl.umap(adata_filt, color=["sample", "CD3D"])
+```
+
+Condition-specific clustering of the cells indicates that we need to integrate the cells across conditions to ensure that cells of the same cell type cluster together. 
+_**If cells cluster by sample, condition, batch, dataset, modality, performing integration can help align cells across the groups to greatly improve the clustering and the downstream analyses**._
+
+**Why is it important that cells of the same cell type cluster together?** 
+
+We want to identify  _**cell types which are present in all samples/conditions/modalities**_ within our dataset, and therefore would like to observe a representation of cells from both samples/conditions/modalities in every cluster. This will enable more interpretable results downstream (i.e. DE analysis, ligand-receptor analysis, differential abundance analysis...).
+
+# SCVI
+TODO: text on what SCVI does - to represent cells and can also do batch correction
+
+SCVI makes use of Variational Auto-Encoders in order to construct a model that best fits the data according to the parameters set. We can see the basic informatin about the model before running the train step.
+
+```{python}
+#| label: scvi_model
+scvi.model.SCVI.setup_anndata(adata_filt, layer="counts", batch_key="sample", 
+                              categorical_covariate_keys=["mitoFr"])
+model = scvi.model.SCVI(adata_filt, n_layers=2, n_latent=30, gene_likelihood="nb")
+model
+```
+
+::: callout-note
+# Epochs
+The number of epochs specifies how many iterations of the model training will be done. The more epochs will improve the results of the training. Here we have specific 40 to reduce the amount of time this step takes to run without giving up on the accuracy of the results. By default the number of epochs is typically greater than 200.
+:::
+
+```{python}
+#| label: train_model
+# model.train(max_epochs=40)
+```
+
+We use the `get_latent_representation()` function to generate a new latent space (like PCA) that reduces the dimensionality of our dataset while taking into consideration the batch variable we specified earlier. This new latent space, which we store as `X_scvi` can later be used to calculate new neighbors and UMAP coordinates.
+
+```{python}
+#| label: x_scvi
+# adata_filt.obsm["X_scvi"] = model.get_latent_representation()
+
+adata_filt = sc.read_h5ad("../results/08_integration.h5ad")
+adata_filt
+```
+
+Now we can compare and contrast the latent representation that was calculated with PCA and the new SCVI representation. This allows us to see what batch correction has been accomplished.
+
+```{python}
+#| label: plot_pca_scvi
+# Create plot with the correct dimensions
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+sc.pl.embedding(adata_filt, basis='X_pca', color='sample',
+               ax=axes[0], title="PCA", show=False)
+sc.pl.embedding(adata_filt, basis='X_scvi', color='sample',
+               ax=axes[1], title="SCVI", show=False)
+
+plt.tight_layout()
+plt.show()
+```
+
+# Save
+
+```{python}
+#| label: save
+# adata_filt.write_h5ad("../results/08_integration.h5ad")
+```

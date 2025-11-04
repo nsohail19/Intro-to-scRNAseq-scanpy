@@ -1,0 +1,405 @@
+---
+title: "Normalization, identification of most variable genes"
+author: "Mary Piper, Meeta Mistry, Radhika Khetani, Jihe Liu"
+date: November 30, 2022
+---
+
+Approximate time: 90 minutes
+
+## Learning Objectives:
+
+* Discuss why normalizing counts is necessary for accurate comparison between cells
+* Describe different normalization approaches
+* Evaluate the effects from any unwanted sources of variation and correct for them
+
+
+# Normalization and unwanted variation
+
+Now that we have our high quality cells, we can explore our data and see if we are able to identify any sources of unwanted variation. Depending on what we observe, we will utilize that information when performing variance stabilization using SCTransform but also to regress out the effects of any covariates that have an effect on our data.
+
+<p align="center">
+<img src="../img/sc_workflow_2022.jpg" width="630">
+</p>
+
+***
+
+_**Goals:**_ 
+ 
+ - _To accurately **normalize the gene expression values** to account for differences in sequencing depth and overdispersed count values._
+ - _To **identify the most variant genes** likely to be indicative of the different cell types present._
+
+_**Challenges:**_
+ 
+ - _**Checking and removing unwanted variation** so that we do not have cells clustering by artifacts downstream_
+
+_**Recommendations:**_
+ 
+ - _Have a good idea of your expectations for the **cell types to be present** prior to performing the clustering. Know whether you expect cell types of low complexity or higher mitochondrial content AND whether the cells are differentiating_
+ - _**Regress out** number of UMIs (default using sctransform), mitochondrial content, and cell cycle, if needed and appropriate for experiment, so not to drive clustering downstream_
+ 
+***
+
+# Normalization
+An essential first step in the majority of mRNA expression analyses is normalization, whereby systematic variations are adjusted for to **make expression counts comparable across genes and/or samples**. The counts of mapped reads for each gene is proportional to the expression of RNA ("interesting") in addition to many other factors ("uninteresting"). Normalization is the process of adjusting raw count values to account for the "uninteresting" factors. 
+
+The main factors often considered during normalization are:
+ 
+ - **Sequencing depth:** Accounting for sequencing depth is necessary for comparison of gene expression between cells. In the example below, each gene appears to have doubled in expression in cell 2, however this is a consequence of cell 2 having twice the sequencing depth.
+
+<p align="center">
+<img src="../img/sequencing_depth.png" width="400">
+</p>
+
+Each cell in scRNA-seq will have a differing number of reads associated with it. So to accurately compare expression between cells, it is necessary to normalize for sequencing depth.
+ 
+ - **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same cell. The number of reads mapped to a longer gene can appear to have equal count/expression as a shorter gene that is more highly expressed. 
+ 
+<p align="center"> 
+<img src="../img/length_of_gene.png" width="400">
+</p>
+
+::: callout-note
+If using a 3' or 5' droplet-based method, the length of the gene will not affect the analysis because only the 5' or 3' end of the transcript is sequenced.* However, if using full-length sequencing, the transcript length should be accounted for.
+:::
+
+# Methods for scRNA-seq normalization
+
+Various methods have been developed specifically for scRNA-seq normalization. Some **simpler methods resemble what we have seen with bulk RNA-seq**; the application of **global scale factors** adjusting for a count-depth relationship that is assumed common across all genes. However, if those assumptions are not true then this basic normalization can lead to over-correction for lowly and moderately expressed genes and, in some cases, under-normalization of highly expressed genes ([Bacher R et al, 2017](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5473255/)). **More complex methods will apply correction on a per-gene basis.** In this lesson we will explore both approaches.
+
+Regardless of which method is used for normalization, it can be helpful to **think of it as a two-step process** (even though it is often described as a single step in most papers). The first is a scaling step and the second is a transformation.
+
+**1. Scaling**
+
+The first step in normalization is to **multiply each UMI count by a cell specific factor to get all cells to have the same UMI counts**. Why would we want to do this? Different cells have different amounts of mRNA; this could be due to differences between cell types or variation within the same cell type depending on how well the chemistry worked in one drop versus another. In either case, we are not interested in comparing these absolute counts between cells. Instead we are interested in comparing concentrations, and scaling helps achieve this.
+
+
+**2. Transformation**
+
+The next step is a transformation, and it is at this step where we can distinguish the simpler versus complex methods as mentioned above.
+
+**Simple transformations** are those which apply the same function to each individual measurement. Common examples include a **log transform** (which is typical), or a square root transform (less commonly used).
+
+
+# Explore sources of unwanted variation
+
+The most common biological data correction (or source of "uninteresting" variation) in single cell RNA-seq is the effects of the cell cycle on the transcriptome. We need to explore the data and see if we observe any effects in our data.   
+
+## Set-up
+
+Let's start by creating a new script for the normalization and integration steps. Create a new script and save it as `normalization.ipynb`.
+
+For the remainder of the workflow we will be mainly using functions available in the scanpy package. 
+
+```{python}
+#| label: load_library
+# Single-cell RNA-seq - normalization
+
+import scanpy as sc
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+adata_filt = sc.read_h5ad("../results/05_filter.h5ad")
+```
+
+Before we make any comparisons across cells, we will **apply a simple normalization.** This is solely for the purpose of exploring the sources of variation in our data.
+
+```{python}
+#| label: run_normalization
+# Saving count data
+adata_filt.layers["counts"] = adata_filt.X.copy()
+
+# Normalizing to median total counts
+adata_filt.layers['median'] = adata_filt.layers['counts'].copy()
+sc.pp.normalize_total(adata_filt, layer='median')
+
+# Logarithmize the data
+adata_filt.layers['log'] = adata_filt.layers['median'].copy()
+sc.pp.log1p(adata_filt, layer='log')
+```
+
+Let's investigate what changes have been made to our scanpy object in the process of running each of these functions. Ideally we would expect to see that we have new layers in our object that correspond with our raw counts, normalized counts, and log-scaled normalized counts.
+
+```{python}
+#| label: show_layers
+adata_filt.layers
+```
+
+## Highly Variable Genes
+
+To perform any dimensionality reduction, we need to **calculate our most highly variable genes**. 
+
+Highly variable gene selection is extremely important since many downstream steps are computed only on these genes. Scanpy allows us to access the ranked highly variable genes with the `highly_variable_genes()` function. 
+
+The parameters we are specifying refer to:
+
+- `layer`: Which count matrix to use, if `.X` is not the matrix we want to use.
+- `n_top_genes`: Number of highly-variable genes to keep.
+- `batch_key`: If specified, highly-variable genes are selected within each batch separately and merged. This simple process avoids the selection of batch-specific genes and acts as a lightweight batch correction method.
+
+```{python}
+#| label: calc_hvgs
+# HVG
+sc.pp.highly_variable_genes(adata_filt, layer='counts', 
+                            flavor='seurat_v3', n_top_genes=4500, 
+                            batch_key='sample')
+```
+
+We now have generate new columns in our `var` slot:
+
+- `highly_variable`:
+- `highly_variable_rank`:
+- `means`:
+- `variances`:
+- `variances_norm`:
+- `highly_variable_nbatches`:
+
+```{python}
+#| label: show_hvgs
+adata_filt.var.head()
+```
+
+To visualize the variable genes we calculated, we can make use of the scanpy's `pl.highly_variable_genes()`.
+
+```{python}
+#| label: plot_hvgs_scanpy
+sc.pl.highly_variable_genes(adata_filt)
+```
+
+Alternatively, we can create our own custom plot to represent this data. Where we can  visualize the dispersion of all genes, showing a gene's average expression across all cells on the x-axis and variance on the y-axis. Ideally we want to use genes that have high variance since this can indicate a change in expression depending on populations of cells. Adding labels using the `text()` helps us understand which genes will be driving shape of our data.
+
+```{python}
+#| label: plot_hvgs_manual
+# Set-up the shape of the plot
+fig, ax = plt.subplots(figsize=(5, 5), dpi=150)
+
+# Grab the mean and variance to use in a scatterplot
+x = np.log2(adata_filt.var['means'] + 1)
+y = np.log2(adata_filt.var['variances_norm'] + 1)
+
+# Create scatterplot of ALL genes
+# Color them blue ('b')
+sns.scatterplot(x=x, y=y, ax=ax, label='All genes', color='b')
+
+# Grab ONLY the highly variable genes
+# Plot them on top in the color red ('r')
+adata_filt.uns['id_hvg'] = np.where(adata_filt.var['highly_variable'])[0]
+sns.scatterplot(x=x[adata_filt.uns['id_hvg']], y=y[adata_filt.uns['id_hvg']], 
+                ax=ax, label='HVGs', color='r')
+
+# Set the labels 
+ax.set(xlabel='log2(Mean Expression)', ylabel='log2(Normalized Variance)',
+       title='Mean Expression vs. Normalized Variance of Genes')
+
+
+# Take the top N variable genes and label them on the plot
+N = 15
+top_idx = adata_filt.var['highly_variable_rank'].nsmallest(N).index
+for gene_name in top_idx:
+    ax.text(x[gene_name], y[gene_name], gene_name, fontsize=8, color="black")
+
+# Visualize the plot
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+Now that we have calculated our highly variable genes, we can use these genes as the input for our PCA calculations.
+
+# PCA
+
+Principal Component Analysis (PCA) is a technique used to emphasize variation as well as similarity, and to bring out strong patterns in a dataset; it is one of the methods used for *"dimensionality reduction"*. 
+
+::: callout-note
+For a more **detailed explanation on PCA**, please [look over this lesson](06_theory_of_PCA.qmd) (adapted from StatQuests/Josh Starmer's YouTube video). We also strongly encourage you to explore the video [StatQuest's video](https://www.youtube.com/watch?v=_UVHneBUBW0) for a more thorough understanding. 
+:::
+
+Let's say you are working with a single-cell RNA-seq dataset with *12,000 cells* and you have quantified the expression of *20,000 genes*. The schematic below demonstrates how you would go from a cell x gene matrix to principal component (PC) scores for each inividual cell.
+
+<p align="center">
+<img src="../img/PCA_scrnaseq_1.png" width="900">
+</p>
+
+After the PC scores have been calculated, you are looking at a matrix of 12,000 x 12,000 that represents the information about relative gene expression in all the cells. You can select the PC1 and PC2 columns and plot that in a 2D way.
+
+<p align="center">
+<img src="../img/PCA_scrnaseq_2.png" width="600">
+</p>
+
+You can also use the PC scores from the first 40 PCs for downstream analysis like clustering, marker identification etc., since these represent the majority of the variation in the data. We will be talking a lot more about this later in this workshop.
+
+<p align="center">
+<img src="../img/PCA_scrnaseq_3.png" width="600">
+</p>
+
+::: callout-note
+For datasets with a larger number of cells, only the PC1 and PC2 scores for each cell are usually plotted, or used for visualization. Since these PCs explain the most variation in the dataset, the expectation is that the cells that are more similar to each other will cluster together with PC1 and PC2.
+:::
+
+```{python}
+#| label: calc_pca
+# Set X to be our log-normalized data
+adata_filt.X = adata_filt.layers['log']
+sc.tl.pca(adata_filt, n_comps=50, 
+          mask_var="highly_variable")
+```
+
+In running this function, we have create 2 new slots in our scanpy object. The `obsm` and `varm`.
+
+TODO: What do those stand for?
+
+```{python}
+#| label: show_adata
+adata_filt
+```
+
+The `X_pca` contains the scores for each cell and Principal Component.
+
+```{python}
+#| label: show_pca
+adata_filt.obsm["X_pca"][1:5, 1:5]
+```
+
+With these scores, we can plot how the cells lay on PC1 and PC2 with `pp.pca` where the `color` argument tells us which metadata column to color the cells by.
+
+```{python}
+#| label: plot_pca_sample
+sc.pl.pca(adata_filt, color="sample")
+```
+
+## Evaluating effects of cell cycle 
+
+After scoring the cells for cell cycle, we would like to **determine whether cell cycle is a major source of variation in our dataset using PCA**. 
+
+We have provided a list of human cell cycle markers for you here. However, if you are not working with human data we have [additional materials](Aside_cell_cycle_scoring.qmd) detailing how to acquire cell cycle markers for other organisms of interest.
+
+```{python}
+#| label: cell_cycle_genes
+g2m_genes = [
+    "NCAPD2", "ANLN", "TACC3", "HMMR", "GTSE1", "NDC80", "AURKA", "TPX2",
+    "BIRC5", "G2E3", "CBX5", "RANGAP1", "CTCF", "CDCA3", "TTK", "SMC4",
+    "ECT2", "CENPA", "CDC20", "NEK2", "CENPF", "TMPO", "HJURP", "CKS2",
+    "DLGAP5", "PIMREG", "TOP2A", "PSRC1", "CDCA8", "CKAP2", "NUSAP1",
+    "KIF23", "KIF11", "KIF20B", "CENPE", "GAS2L3", "KIF2C", "NUF2",
+    "ANP32E", "LBR", "MKI67", "CCNB2", "CDC25C", "HMGB2", "CKAP2L",
+    "BUB1", "CDK1", "CKS1B", "UBE2C", "CKAP5", "AURKB", "CDCA2",
+    "TUBB4B", "JPT1"]
+
+s_genes = [
+    "UBR7", "RFC2", "RAD51", "MCM2", "TIPIN", "MCM6", "UNG", "POLD3",
+    "WDR76", "CLSPN", "CDC45", "CDC6", "MSH2", "MCM5", "POLA1", "MCM4",
+    "RAD51AP1", "GMNN", "RPA2", "CASP8AP2", "HELLS", "E2F8", "GINS2",
+    "PCNA", "NASP", "BRIP1", "DSCC1", "DTL", "CDCA7", "CENPU", "ATAD2",
+    "CHAF1B", "USP1", "SLBP", "RRM1", "FEN1", "RRM2", "EXO1", "CCNE2",
+    "TYMS", "BLM", "PRIM1", "UHRF1"]
+```
+
+To assign each cell a score based on its expression of G2/M and S phase markers, we can use the function `tl.score_genes_cell_cycle()`. This function calculates cell cycle phase scores based on canonical markers that required as input.
+
+```{python}
+#| label: score_cell_cycle
+sc.tl.score_genes_cell_cycle(adata_filt, s_genes, g2m_genes)
+```
+
+Whenever we run a new function, it is a good idea to observer how our scanpy object changes. Since this is a score being calculated for each cell, we can take a look at the metadata to see which new columns have been generated.
+
+In this case, we can see that the columns:
+
+- S_score
+- G2M_score
+- phase
+
+Have been added to our `obs` dataframe.
+
+```{python}
+#| label: show_obs
+adata_filt.obs.head()
+```
+
+Which we can now color on our PCA plot.
+
+```{python}
+#| label: plot_pca_phase
+sc.pl.pca(adata_filt, color="phase")
+```
+
+To more clearly see the distribution for each phase, we can emphasize the `groups` and put the plots side-by-side.
+
+```{python}
+#| label: plot_pca_phase_split
+# Create plot with the correct dimensions
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+# Plot each phase
+sc.pl.pca(adata_filt, color="phase", groups="G1", ax=axes[0], 
+          show=False, title="G1 Phase")
+sc.pl.pca(adata_filt, color="phase", groups="G2M", ax=axes[1], 
+          show=False, title="G2M Phase")
+sc.pl.pca(adata_filt, color="phase", groups="S", ax=axes[2], 
+          show=False, title="S Phase")
+
+plt.tight_layout()
+plt.show()
+```
+
+
+::: {.callout-note collapse=false}
+# When should cell cycle phase be regressed out?
+
+Below are two PCA plots taken from the Seurat vignette dealing with [Cell-Cycle Scoring and Regression](https://satijalab.org/seurat/archive/v3.1/cell_cycle_vignette.html).
+
+This first plot is similar to what we plotted above, it is a PCA prior to regression to evaluate if the cell cycle is playing a big role in driving PC1 and PC2. Clearly, the cells are separating by cell type in this case, so the vignette suggests regressing out these effects.
+
+<img src="../img/cell_cycle_not_regressed.png" width="400">
+
+This second PCA plot is **post-regression**, and displays how effective the regression was in removing the effect we observed.
+
+<img src="../img/cell_cycle_regressed.png" width="400">
+:::
+
+::: callout-tip
+# [**Exercise 1**](07_normalization-Answer_key.qmd#exercise-1)
+
+Mitochondrial expression is another factor which can greatly influence clustering. Oftentimes, it is useful to regress out variation due to mitochondrial expression. However, if the differences in mitochondrial gene expression represent a biological phenomenon that may help to distinguish cell clusters, then we advise not regressing this out. In this exercise, we can perform a quick check similar to looking at cell cycle and decide whether or not we want to regress it out.
+
+First, turn the mitochondrial ratio variable into a new categorical variable based on quartiles (using the code below):
+
+```{python}
+#| label: mt_quartiles
+np.percentile(adata_filt.obs["pct_counts_mito"], [0, 25, 50, 75, 100])
+```
+
+We then add categorical labels to cells based upon where they fall within the quartiles.
+
+```{python}
+#| label: mitoFr_calc
+adata_filt.obs['mitoFr'] = pd.cut(
+    adata_filt.obs['pct_counts_mito'],
+    bins=[-np.inf, 1.44, 1.99, 2.67, np.inf],
+    labels=["Low", "Medium", "Medium high", "High"])
+ 
+adata_filt.obs.head()
+```
+
+1. Next, plot the PCA similar to how we did with cell cycle regression. *Hint: use the new `mitoFr`variable to split cells and color them accordingly.*
+2. Evaluate the PCA plot generated in #2.
+
+	* Determine whether or not you observe an effect.
+	* Describe what you see. 
+	* Would you regress out mitochondrial fraction as a source of unwanted variation?
+:::
+
+# TODO 
+
+There is no SCTransform implementation in python where we could directly re-use the materials. The best I've found is this, but it would require dependencies to be installed and does not appear to be actively maintained
+https://github.com/atarashansky/SCTransformPy
+
+Maybe - https://www.sc-best-practices.org/preprocessing_visualization/normalization.html#analytic-pearson-residuals
+
+# Save
+
+```{python}
+#| label: save
+# adata_filt.write_h5ad("../results/07_normalized.h5ad")
+```
