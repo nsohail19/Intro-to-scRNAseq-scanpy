@@ -1,0 +1,138 @@
+---
+title: "Marker identification"
+author: "Mary Piper, Lorena Pantano, Meeta Mistry, Radhika Khetani, Jihe Liu"
+date: Wednesday, February 5th, 2020
+---
+
+Approximate time: 75 minutes
+
+
+## Learning Objectives:
+
+* Describe how to determine markers of individual clusters
+* Discuss the iterative processes of clustering and marker identification
+
+# Marker identification
+
+Now that we have identified our desired clusters, we can move on to marker identification, which will allow us to verify the identity of certain clusters and help surmise the identity of any unknown clusters. 
+
+<p align="center">
+<img src="../img/sc_workflow_2022.jpg" width="630">
+</p>
+
+***
+
+_**Goals:**_ 
+ 
+ - _To **determine the gene markers** for each of the clusters_
+ - _To **identify cell types** of each cluster using markers_
+ - _To determine whether there's a need to **re-cluster based on cell type markers**, perhaps clusters need to be merged or split_
+
+_**Challenges:**_
+ 
+ - _Over-interpretation of the results_
+ - _Combining different types of marker identification_
+
+_**Recommendations:**_
+ 
+ - _Think of the results as hypotheses that need verification. Inflated p-values can lead to over-interpretation of results (essentially each cell is used as a replicate). Top markers are most trustworthy._
+ - _Identify all markers conserved between conditions for each cluster_
+ - _Identify markers that are differentially expressed between specific clusters_
+
+***
+
+```{python}
+#| label: load_libraries
+# Single-cell RNA-seq - clustering QC
+
+import scanpy as sc
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+adata_clust = sc.read_h5ad("../results/10_clusters.h5ad")
+adata_clust
+```
+
+Our clustering analysis resulted in the following clusters:
+
+```{python}
+sc.pl.embedding(adata_clust, color="leiden_0.8",
+                show=False, basis="umap_scvi",
+                legend_loc='on data', legend_fontsize=14,
+                legend_fontoutline=3)
+```
+
+**Remember that we had the following questions from the clustering analysis**: 
+
+1. _Do the clusters corresponding to the same cell types have biologically meaningful differences? Are there subpopulations of these cell types?_
+2. _Can we acquire higher confidence in these cell type identities by identifying other marker genes for these clusters?_
+
+
+**Identification of all markers for each cluster:** this analysis compares each cluster against all others and outputs the genes that are differentially expressed/present. 
+	- *Useful for identifying unknown clusters and improving confidence in hypothesized cell types.*
+
+
+## Identification of all markers for each cluster
+
+This type of analysis is typically **recommended for when evaluating a single sample group/condition**. With the ` FindAllMarkers()` function we are comparing each cluster against all other clusters to identify potential marker genes. The cells in each cluster are treated as replicates, and essentially a **differential expression analysis is performed** with some statistical test. 
+
+::: callout-note
+The default is a Wilcoxon Rank Sum test, but there are other options available. 
+:::
+
+We want to make sure that we use our log-normalized counts before running our wilcox test. So we put that `log` layer back into `.X`
+
+```{python}
+#| label: run_wilcox
+adata_clust.X = adata_clust.layers["log"]
+sc.tl.rank_genes_groups(adata_clust, "leiden_0.8", method="wilcoxon")
+```
+
+We can visualize the top 30 genes for each cluster using the `pl.rank_genes_groups()`.
+
+```{python}
+#| label: plot_dge
+sc.pl.rank_genes_groups(adata_clust, n_genes=30)
+```
+
+If we wanted to zoom in on cluster and look at all genes as a dataframe, we can alternatively make use of the `get.rank_genes_groups_df()` to get the genes that are differential from cluster 3 vs rest.
+
+```{python}
+#| label: df_dge
+sc.get.rank_genes_groups_df(adata_clust, "3").head()
+```
+
+- **names:** gene symbol
+- **pvals:** p-value not adjusted for multiple test correction
+- **logfoldchanges:** average log fold change. Positive values indicate that the gene is more highly expressed in the cluster.	
+- **pvals_adj:** adjusted p-value, based on bonferroni correction using all genes in the dataset, used to determine significance
+
+
+::: callout-note
+Since each cell is being treated as a replicate this will result in inflated p-values within each group! A gene may have an incredibly low p-value < 1e-50 but that doesn't translate as a highly reliable marker gene. 
+:::
+
+```{python}
+sc.pl.rank_genes_groups_violin(adata_clust, "3")
+```
+
+
+```{python}
+sc.pl.rank_genes_groups_stacked_violin(adata_clust, ["3", "4"])
+```
+
+```{python}
+sc.pl.rank_genes_groups_heatmap(adata_clust, ["3", "4"])
+```
+
+
+```{python}
+sc.pl.rank_genes_groups_dotplot(adata_clust, ["3", "4"])
+```
+
+
+```{python}
+sc.pl.rank_genes_groups_matrixplot(adata_clust, ["3", "4"])
+```
